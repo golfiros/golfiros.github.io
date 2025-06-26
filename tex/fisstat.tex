@@ -1,0 +1,539 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyheadoffset{0.5cm}
+\setlength{\headheight}{15pt}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{intersections}
+\usetikzlibrary{spath3}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[brazilian]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{enumitem}
+
+\usepackage{ragged2e}
+\usepackage{epigraph}
+\setlength\epigraphwidth{.8\textwidth}
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lema}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definição}
+\theoremstyle{definition}
+\newtheorem{law}{Lei}
+\setcounter{law}{-1}
+
+\title{Física Estatística}
+\author{Gabriel Golfetti}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+
+\epigraph{\justifying A capacidade de reduzir tudo a leis fundamentais simples não implica 
+na capacidade de partir destas e reconstruir o universo. A hipótese construcionista se 
+desfaz quando confrontada com o par de dificuldades de escala e complexidade. A cada camada 
+de complexidade surgem propriedades totalmente novas. Psicologia não é uma aplicação da 
+biologia, e muito menos a biologia uma aplicação da química. Agora vemos que o todo torna-se 
+não algo além, mas algo completamente diferente da soma de suas partes.}
+{\textit{Philip W. Anderson}, More is Different: Broken Symmetry and the Nature of the 
+Hierarchical Structure of Science (1972)}
+
+\noindent A termodinâmica é área da física que lida com \textit{emergência}, ou seja, propriedades, 
+leis ou fenômenos que ocorrem em escalas macroscópicas - quando o número de constituintes torna-se
+grande - que não surgem naturalmente na escala microscópica - na dinâmica fundamental dos 
+constituintes, apesar de por definição o sistema macroscópico podendo ser visto como um grande 
+conjunto de sistemas microscópicos sujeitos a tais leis dinâmicas.
+
+\subsection{Escala}
+
+Com o objetivo de capturar o que acontece quando nossos sistemas tornam-se grandes e macroscópicos, 
+introduzimos a noção de \textit{transformação de escala} para os nossos sistemas de interesse, 
+onde caracterizamos o comportamento de uma grandeza física $X$ quando alteramos o tamanho por um 
+fator $\lambda$ com uma \textit{lei de escala} dada por uma função positiva e monotônica $f$. 
+Escrevemos
+$$X\sim f(\lambda)$$
+quando $X$ torna-se $f(\lambda)X$ sob uma transformação de escala. 
+
+Dois tipos de lei de escala
+são especiais o suficiente para receberem nomes. Uma grandeza é dita \textit{extensiva} quando sua
+lei de escala é proporcional, $X\sim\lambda$, normalmente denotada por letras maiúsculas. Uma
+grandeza é dita \textit{intensiva} quando sua lei de escala é constante, $y\sim1$, normalmente
+denotada por letras minúsculas.
+
+Note que a noção de escala é ambígua: poderiamos reformular todas as leis de escala para usar
+$\lambda^2$, $1/\lambda$, $2^\lambda$ ou qualquer outra função monotônica como parâmetro, e como
+consequência a noção de extensividade como aqui apresentada está sujeita a essa mesma ambiguidade.
+Nas situações em que essa confusão pode se manifestar, costuma-se utilizar diretamente alguma 
+grandeza de referência $\Lambda$ ao invés do parâmetro de escala no enunciado dessas leis, onde fica
+implícita a extensividade de $\Lambda$, e portanto a de qualquer grandeza para qual dizemos que 
+$X\sim\Lambda$. De forma geral, $\Lambda$ assim como as equações que regem as relações entre grandezas
+vão ser tratadas como propriedades fixas do sistema em questão, enquanto as outras grandezas serão
+tomadas como sujeitas a mudança, chamadas \textit{variáveis de estado}.
+
+\subsection{Calor}
+
+A medida que um sistema torna-se complexo vamos perdendo a capacidade de descrever e controlar 
+precisamente as interações entre seus constituintes. Cada um destes move-se de acordo com a dinâmica
+microscópica exercendo e estando sujeito a forças dos outros de forma que os detalhes vão muito
+além da especificidade de qualquer preparação experimental. Este movimento errático dentro de um
+sistema físico é justamente o que nos permite caracterizar suas propriedades através de leis de
+escala, uma vez que é responsavel por redistribuir bolsões de certas grandezas ao longo de um
+sistema todo.
+
+Quando lidamos especificamente com a energia, o efeito resultante destas várias pequenas 
+transferências de trabalho irregulares, o \textit{calor}, ainda que sujeito à lei da conservação de 
+energia, comporta-se de forma distinta do trabalho que estamos acostumados na mecânica, e deve ser 
+caracterizado como tal. O calor é energia térmica em trânsito. Quando dois sistemas estão em uma configuração
+que possibilita a troca de calor entre eles, são ditos em \textit{contato térmico}. Um meio que 
+permite a transferência de calor entre sistemas é dito \textit{diatérmico}. Do contrário, um 
+que não a permite, é dito \textit{isolante}.
+
+Da mesma maneira que o movimento irregular dos constituintes gera uma redistribuição de grandezas
+dentro de um próprio sistema, ela pode também acarretar algo semelhante entre sistemas, afinal
+a fronteira que separa um sistema do outro quando estes são interagentes é uma construção teórica.
+Quando dois sistemas encontram-se em uma situação onde a troca de calor entre eles é possível,
+porém não ocorre de forma apreciável, são ditos em \textit{equilíbrio térmico}. É fácil aceitar que
+um sistema esteja em equilíbrio térmico com uma cópia de si mesmo, e até mesmo qualquer versão dele
+sujeita a uma transformação de escala. A definição aqui dada também é inerentemente simétrica. Há
+no entanto algo fundamental que precisa ser dito sobre a condição de equilíbrio.
+
+\begin{law}
+    Dados três sistemas $A$, $B$ e $C$. Se $A$ está em equilíbrio térmico com $B$, e $B$ está em
+    equilíbrio térmico com $C$, então $A$ está em equilíbrio térmico com $C$.
+\end{law}
+
+Esta lei da à noção de equilíbrio térmico uma estrutura de equivalência. Em particular, nos permite definir
+a \textit{isoterma} de qualquer estado como a colecão de todos os estados de todos os sistemas que estão
+em equilíbrio térmico com o primeiro. Por sua vez, uma variável de estado $\theta$ que determina unicamente
+a qual isoterma o estado pertence é chamada de \textit{escala de temperatura}. 
+
+Em breve veremos que existe uma noção de temperatura unificada que nos permite identificar exatamente
+a qual isoterma um sistema pertence de uma forma global, mas por enquanto uma noção localizada para cada sistema
+é mais do que suficiente, e sua existência - assim como sua compatibilidade entre sistemas - será tomada como
+pressuposto. 
+
+\subsection{Trabalho e Energia}
+
+Embora a transferência de calor seja uma característica emergente de sistemas macroscópicos, ainda é
+possível realizar as transferências de energia que estamos acostumados na mecânica usual, o
+\textit{trabalho}. Processos termodinâmicos são capazes de levantar pesos, acelerar e frear trens, 
+e esticar a superfície de borracha de um balão. Estendemos a lei da conservação de energia mecânica para
+o calor através da seguinte.
+
+\begin{law}
+    Todo sistema termodinâmico possui uma variável de estado $U$, chamada de \textit{energia interna} tal
+    que se num processo termodinâmico o sistema absorve calor $Q$ e recebe trabalho $W$, vale que
+    $$\Delta U=Q+W.$$
+\end{law}
+
+É fácil ver que a energia interna é deve ser uma variável extensiva. Para processos contínuos, podemos 
+dividílo em passos infinitesimais, e em cada um deles escrevemos a primeira lei da termodinâmica como
+$$dU=\delta Q+\delta W,$$
+onde o uso do $\delta$ no lugar do $d$ indica que essas grandezas, apesar de infinitesimais, são específicas
+do processo ao qual o sistema está sendo submetido e não propriedades do sistema em si. Isso torna-se
+material quando expandimos $\delta W$ em termos de \textit{coordenadas de trabalho} ou \textit{volumes} 
+$X_1,\dots,X_n$ que são variáveis extensivas do sistema tais que 
+$$\delta W=y_1dX_1+\cdots+y_ndX_n,$$
+e $y_1,\dots,y_n$ são variáveis intensivas chamadas de \textit{coeficientes de trabalho} ou \textit{pressões}. 
+Nesta expansão vale ressaltar uma analogia com a mecânica, onde cada coordenada corresponde a uma coordenada 
+no espaço na qual um corpo pode se mover, e cada coeficiente é a componente da força resultante na direção 
+correspondente. Os pares de variáveis $(X_1, y_1),\dots,(X_n,y_n)$ são chamados pares de \textit{variáveis 
+conjugadas}.
+
+\subsection{Capacidade Térmica}
+
+Se um sistema físico possui uma escala de temperatura $\theta$, é esperado que este valor esteja sujeito a
+alterações a medida que o sistema sofre mudanças em seu estado. Uma grandeza importante a ser definida para
+um processo termodinâmico contínuo é sua \textit{capacidade térmica}, dado pela razão entre o calor absorvido
+pelo sistema e a variação de sua temperatura:
+$$C=\frac{\delta Q}{d\theta}.$$
+
+Um processo específico de interesse geral é o processo \textit{isocórico}, onde todas as coordenadas de trabalho
+são mantidas fixas, e a capacidade térmica associada $C_V$ é uma variável de estado extensiva importante uma 
+vez que dados valores fixos para essas coordenadas, nos permite escrever a energia interna como
+$$U=\int C_V\,d\theta.$$
+Além disso, vamos considerar que as escalas de temperatura são todas tais que $C_V>0$. Outro processo onde
+é fácil entender a capacidade térmica como variável de estado é o processo \textit{isobárico}, onde evoluimos
+o sistema mantendo todas os coefficientes de trabalho constantes e permitimos as coordenadas variarem para
+manter este vínculo. A capacidade térmica associada é denotada por $C_p$, e vale que
+$$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
+
+\subsection{Problemas}
+\begin{enumerate}
+    \item Classifique as seguintes grandezas entre extensivas ou intensivas:
+    \begin{enumerate}
+        \item o número de moléculas de água em um copo
+        \item o índice de refração de determinado vidro
+        \item a densidade de determinado metal
+        \item o volume de gasolina no tanque de um carro
+    \end{enumerate}
+    \item A escala de temperatura Celsius é definida com $0\,\mathrm{^\circ C}$ no ponto de fusão da água,
+    $100\,\mathrm{^\circ C}$ no ponto de ebulição da água, e determinada pela dilatação de um filamento 
+    de álcool nos pontos intermediários. A escala Farenheit também é definida pela dilatação de um filamento
+    de álcool, porém nela temos o ponto de fusão da água $32\,\mathrm{^\circ F}$ e o de ebulição 
+    $212\,\mathrm{^\circ F}$. A qual temperatura em $\mathrm{^\circ C}$ equivale a temperatura de 
+    $80\mathrm{^\circ F}$?
+    \item A capacidade térmica molar do ouro é dada por $25{,}4\,\mathrm{J/mol\,^\circ C}$, a massa molar do
+    ouro é $197\,\mathrm{g/mol}$ e sua densidade é $19{,}3\,\mathrm{g/cm^3}$. Dado que a Terra tem um raio de
+    $6400\,\mathrm {km}$, qual a capacidade térmica de uma bola de ouro do tamanho da Terra?
+    \item A água tem um calor específico de $1\,\mathrm{cal/g\,^\circ C}=4{,}2\,\mathrm{J/g\,^\circ C}$.
+    Quanto calor é necessário para aumentar a temperatura de $1\,\mathrm{kg}$ de água de $0\,\mathrm{^\circ C}$
+    até $100\,\mathrm{^\circ C}$?
+    \item Considere dois objetos de capacidade térmica $C_1$ e $C_2$, com respectivas temperaturas inicias
+    $\theta_1$ e $\theta_2$. Colocamos os dois em contato térmico e eventualmente obtemos equilíbrio. Qual
+    a temperatura final dos dois? Comente sobre o caso $C_2\ll C_1$.
+    \item A capacidade térmica de certo objeto está no gráfico abaixo:
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[scale=2]
+            \draw[step=0.2,black,thin] (0,0) grid (3,2);
+            \draw[step=1,black,thick] (0,0) grid (3,2);
+            \draw (1.5,-0.5) node {$\theta\,(\mathrm{^\circ C})$};
+            \path (0,0) node[below] {0} (1,0) node[below] {10} (2,0) node[below] {20} (3,0) node[below] {30};
+            \draw (-0.5,1) node[rotate=90] {$C\,(\mathrm{J/mol\,^\circ C})$};
+            \path (0,0) node[left] {0} (0,1) node[left] {10} (0,2) node[left] {20};
+            \draw[ultra thick] (0,0.8) -- (2.4,2);
+        \end{tikzpicture}
+    \end{figure}
+
+    Qual o calor necessário para aumentar a temperatura do objeto de $10\,\mathrm{^\circ C}$ até 
+    $20\,\mathrm{^\circ C}$?
+    \item (SOIF 2023) Considere um sistema físico de massa m cuja energia interna é dada pela expressão
+    $$U=\frac{U_0}{e^{T_C/T}-1},$$
+    em que $T_C$ representa uma temperatura característica do sistema, $U_0$ é uma constante, e  $T$ a sua temperatura.
+    \begin{enumerate}
+        \item Calcule a expressão do calor específico do material $c$ 
+        \item Determine os valores limites quanto $T\ll T_C$ e $T\gg T_C$
+        \item Calcule o calor necessário para levar o sistema de $T_C$ até $2T_C$.
+    \end{enumerate}
+    \item (IPhO 1996) Uma peça de metal termicamente isolada é aquecida sob pressão atmosférica por uma corrente
+    elétrica de forma que recebe energia elétrica a uma potência constante $P$. Isso leva ao aumento da temperatura
+    absoluta $T$ do metal com o tempo $t$ como:
+    $$T(t)=T_0\left(1+a\left(t-t_0\right)\right)^{1/4},$$
+        onde $a$, $t_0$ e $T_0$ são constantes. Determine a capacidade térmica $C_p(T)$ do metal.
+\end{enumerate}
+
+
+\section{O Gás Ideal}
+\epigraph{\justifying [...] eu era o mais disposto a contestar algumas Objeções de 
+\textit{Francisco Lineu}, uma vez que o medo de admitir o \textit{Vácuo} tem prevalecido em 
+tantas pessoas proeminentes criadas pela aclamada Filosofia das Escolas, que mesmo que discordem 
+com ele e entre si sobre a solução para o \textit{Fenômeno} do Experimento de \textit{Torricelli},
+concordam em atribui-la a uma substância extremamente rarefeita que preenche o espaço deixado
+pelo Mercúrio.}{\textit{Robert Boyle}, A Defence of the Doctrine Touching the Spring and Weight
+of the Air (1662)}
+
+\noindent Entre meados do século XVII houveram esforços dirigidos a entender a natureza do ar, que
+até o final do século XIX tornaram-se um estudo da natureza dos gases em geral de um ponto de vista
+termodinâmico. Com as limitações experimentais e teóricas da época, foi desenvolvido o modelo mais
+simples possível de um sistema termodinâmico com algum grau de liberdade além da própria quantidade
+de calor absorvida, o \textit{gás ideal}. 
+
+Dentro do escopo do que era possível experimentalmente, determinou-se que até uma ótima precisão, o 
+volume $V$, a \textit{pressão} $p$ - força por unidade de área que uma amostra de gás exerce nas paredes 
+de seu recipiente - e o número de moléculas $N$ de uma amostra de gás caracterizam completamente 
+sua isoterma, 
+$$\frac{pV}{N}\equiv RT,$$
+onde $T$ é uma escala de temperatura conhecida como \textit{temperatura termodinâmica}, cujo valor numérico
+é determinado pela constante dos gases ideais $R$, hoje fixada em $R=8{,}3145\,\mathrm{J/mol\,K}$, de 
+forma que o ponto triplo da água (ponto de coexistência entre seus três estados físicos) ocorre a uma 
+temperatura de $273{,}16\,\mathrm K$. A equação de estado acima normalmente é da forma
+$$pV=NRT,$$
+e recebe o nome de \textit{lei dos gases ideais}.
+
+\subsection{Trabalho e Energia}
+
+Uma descrição da termodinâmica de um sistema não se esgota com as equações de estado. É
+necessário também um entendimento das maneiras que o sistema pode realizar trabalho, e também
+identificar o comportamento da sua energia interna. Para isso, considere uma pequena expansão
+do gás de um volume $V$ para $V+dV$. Independente do formato do recipiente, podemos dividir sua
+superfície em pequenas facetas $i$, cada uma com área $A_i$, deslocando-se perpendicularmente
+por uma distância $dx_i$, contribuindo uma variação de volume $dV_i=A_idx_i$ de forma que
+$\sum_idV_i=dV$.
+
+\begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+        \foreach \n in {1,...,3} {
+            \path[name path global=v0\n,spath/save global=v0\n] 
+                (\n,0) .. controls (\n+0.3,1.5) and (\n+0.3,2.5) .. (\n,4);
+            \path[name path global=h0\n,spath/save global=h0\n] 
+                (0,\n-0.1) .. controls (1.5,\n+0.3) and (2.5,\n+0.3) .. (4,\n-0.1);
+            \path[name path global=v\n,spath/save global=v\n] 
+                (\n+0.3,0.3) .. controls (\n+0.6,1.9) and (\n+0.5,2.7) .. (\n+0.3,4.3); 
+            \path[name path global=h\n,spath/save global=h\n] 
+                (0.3,\n+0.2) .. controls (1.7,\n+0.8) and (2.9,\n+0.7) .. (4.3,\n+0.2); 
+        }
+        \foreach \x/\y/\n in {3/3/0,3/2/1,2/2/2,2/3/3} {
+            \path[name intersections={of={h0\x} and {v0\y},by={p\n}}];
+            \path[name intersections={of={h\x} and {v\y},by={q\n}}];
+        }
+        \fill[lightgray] \foreach \p/\q/\r in {h03/v0/reverse,v02/h0/reverse,h02/v0/,v03/h0/} {[
+            spath/split at intersections with={\p}{\q2},
+            spath/split at intersections with={\p}{\q3},
+            spath/get components of={\p}\c,
+            spath/use={\getComponentOf{\c}2,weld,\r},
+        ]};
+        \foreach \n in {1,...,3} {
+            \draw[thick,darkgray,spath/use=v0\n];
+            \draw[thick,darkgray,spath/use=h0\n];
+            \draw[dashed,spath/use=v\n];
+            \draw[dashed,spath/use=h\n];
+        }
+        \foreach \n in {1,...,3} 
+            \draw[->,thick] (p\n) -- (q\n);
+        \draw[->,thick] (p0) node[below left=-2] {$A_i$} -- (q0) node[above right=-2] {$dx_i$};
+    \end{tikzpicture}
+\end{figure}
+
+Supondo a pressão aproximadamente constante durante essa expansão, a força atuando em cada uma dessas
+facetas é, por definição $F_i=pA_i$, e portanto sua expansão realiza trabalho $\delta W_i=pA_idx_i
+=pdV_i$. Assim, ao longo da superfície toda, o gás realiza um trabalho $\sum_i\delta W_i=pdV$.
+Concluimos portanto que a expressão para o trabalho infinitesimal em termos de variáveis de estado
+para o nosso gás deve ser
+$$\delta W_\text{expansão}=-pdV,$$
+ou seja, $V$ é a coordenada de trabalho conjugada ao coeficiente de trabalho $-p$. Isso nos permite
+escrever que o trabalho realizado por um gás em um processo traçado em um diagrama de pressão por
+volume é dado pela área sob a curva em questão.
+
+Por sua vez, a energia interna do gás ideal é tomada como proporcional a quantidade e temperatura,
+dada por
+$$U=\frac{NRT}{\gamma-1}.$$
+O parâmetro $\gamma$ recebe o nome de \textit{coeficiente de Poisson}, e para gases nobres como 
+hélio e neônio temos $\gamma=5/3$, enquanto para gases diatômicos usuais como oxigênio e nitrogênio 
+temos $\gamma=7/5$. 
+
+\subsection{Processos Importantes}
+Aqui vamos encontrar expressões para o trabalho realizado pelo gás e a capacidade térmica de alguns 
+processos de maior incidência e importância teórica, assim como traçá-los em um diagrama de pressão por 
+volume.
+
+\subsubsection{Isocórico}
+O processo isocórico é o processo contínuo em que mantemos as coordenadas de trabalho (volume) constantes.
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
+        \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
+        \draw [->, thick] (0,0) -- (0,4) node[left] {$p$};
+        \draw (2.5,0.2) -- (2.5,-0.2) node[below] {$V_0$};
+        \draw (0.2,1.2) -- (-0.2,1.2) node[left] {$p_i$};
+        \draw (0.2,2.8) -- (-0.2,2.8) node[left] {$p_f$};
+        \draw [ultra thick,postaction={decorate}] (2.5,1.2) -- (2.5,2.8);
+        \fill (2.5,1.2) circle (0.05);
+        \fill (2.5,2.8) circle (0.05);
+    \end{tikzpicture}
+\end{figure}
+
+\noindent A cada passo vale que $dV=0$, e portanto o trabalho deste processo é
+$$W_\text{isocórico}=0.$$
+A capacidade térmica, por sua vez é
+$$C_V=\frac{\delta Q}{dT}=\frac{dU+pdV}{dT}=\frac{NR}{\gamma-1}.$$
+
+\subsubsection{Isobárico}
+O processo isobárico é o processo contínuo em que mantemos os coeficientes de trabalho (pressão) constantes.
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
+        \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
+        \draw [->, thick] (0,0) -- (0,4) node[left] {$p$};
+        \draw (1.5,0.2) -- (1.5,-0.2) node[below] {$V_i$};
+        \draw (3.5,0.2) -- (3.5,-0.2) node[below] {$V_f$};
+        \draw (0.2,2) -- (-0.2,2) node[left] {$p_0$};
+        \draw [ultra thick,postaction={decorate}] (1.5,2) -- (3.5,2);
+        \fill (1.5,2) circle (0.05);
+        \fill (3.5,2) circle (0.05);
+    \end{tikzpicture}
+\end{figure}
+
+\noindent A pressão no processo todo é constante, e portanto a integral do trabalho é simplesmente
+$$W_\text{isobárico}=\int_{V_i}^{V_f}p\,dV=p_0(V_f-V_i).$$
+A capacidade térmica torna-se
+$$C_p=\frac{\delta Q}{dT}=\frac{dU+pdV}{dT}=\frac{\gamma NR}{\gamma-1}=\gamma C_V = C_V+NR.$$
+
+\subsubsection{Isotérmico}
+O processo isotérmico é o processo contínuo em que mantemos a temperatura constante. Para o gás ideal
+isso significa simplesmente que $pV=\text{const.}$
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
+        \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
+        \draw [->, thick] (0,0) -- (0,4) node[left] {$p$};
+        \draw (1.5,0.2) -- (1.5,-0.2) node[below] {$V_i$};
+        \draw (3.5,0.2) -- (3.5,-0.2) node[below] {$V_f$};
+        \draw (0.2,1.2) -- (-0.2,1.2) node[left] {$p_f$};
+        \draw (0.2,2.8) -- (-0.2,2.8) node[left] {$p_i$};
+        \draw [ultra thick,postaction={decorate},samples=10,domain=1.5:3.5] plot (\x,{4.2/\x});
+        \fill (1.5,2.8) circle (0.05);
+        \fill (3.5,1.2) circle (0.05);
+    \end{tikzpicture}
+\end{figure}
+
+\noindent A expressão para o trabalho fica mais simétrica quando expressada em termos da temperatura
+de operação $T_0$:
+$$W_\text{isotérmico}=\int_{V_i}^{V_f}p\,dV=NRT_0\int_{V_i}^{V_f}\frac{1}{V}\,dV=
+NRT_0\log\frac{V_f}{V_i}=NRT_0\log\frac{p_i}{p_f}.$$
+Como não há variação de temperatura, a capacidade térmica diverge.
+
+\subsubsection{Isotérmico}
+O processo adiabático é o processo contínuo em que mantemos o sistema isolado, sem perimitir trocas
+de calor.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
+        \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
+        \draw [->, thick] (0,0) -- (0,4) node[left] {$p$};
+        \draw (1.5,0.2) -- (1.5,-0.2) node[below] {$V_i$};
+        \draw (3.5,0.2) -- (3.5,-0.2) node[below] {$V_f$};
+        \draw (0.2,0.83) -- (-0.2,0.83) node[left] {$p_f$};
+        \draw (0.2,3.4) -- (-0.2,3.4) node[left] {$p_i$};
+        \draw [ultra thick,postaction={decorate},samples=10,domain=1.5:3.5] plot (\x,{3.4*(1.5/\x)^(5/3)});
+        \fill (1.5,3.4) circle (0.05);
+        \fill (3.5,0.83) circle (0.05);
+    \end{tikzpicture}
+\end{figure}
+
+\noindent Partindo da primeira lei $dU+pdV=0$ e da equação de estado $pV=NRT$ podemos deduzir três
+relações que se realizam no processo adiabático:
+\begin{align*}
+    \frac{dp}{p}+\gamma\frac{dV}{V}=0&\Leftrightarrow pV^\gamma=\text{const.}\\
+    \frac{dT}{T}+(\gamma-1)\frac{dV}{V}=0&\Leftrightarrow TV^{\gamma-1}=\text{const.}\\
+    \gamma\frac{dT}{T}-(\gamma-1)\frac{dp}{p}=0&\Leftrightarrow T^\gamma/p^{\gamma-1}=\text{const.}\\
+\end{align*}
+Note que no diagrama acima com $\gamma=5/3$ a curva é mais inclinada do que a isoterma do diagrama anterior.
+Como não há troca de calor, podemos calcular o trabalho realizado diretamente pela variação de energia
+interna,
+$$W_\text{adiabático}=U_i-U_f=\frac{NR(T_f-T_i)}{\gamma-1}=\frac{p_iV_i-p_fV_f}{\gamma-1}.$$
+Como não há calor absorvido, a capacidade térmica é zero.
+
+\subsection{Problemas}
+\begin{enumerate}
+    \item A lei de Stevin relaciona a variação de pressão $p$ de um fluido de densidade $\rho$ sob ação da
+    gravidade $g$ com a variação de altura $h$ como
+    $$dp=-\rho gdh.$$
+    \begin{enumerate}
+        \item Considere o fluido como sendo um gás ideal de massa molar $\mu$. Encontre a densidade $\rho$
+        como função da pressão $p$ e da temperatura $T$.
+        \item Partindo da Lei de Stevin, escreva uma equação para como a pressão varia com a altura.
+        \item Seja $p_0$ a pressão atmosférica no nível do mar, marcado como $h=0$. Supondo que a temperatura
+        da atmosfera seja constante com a altura, encontre $p(h)$.
+        \item O monte Everest possui uma altura de $8848\,\mathrm{m}$ com relação ao nível do mar. Suponha que
+        a temperatura do ar é constante $T=273\,\mathrm{K}$ e a gravidade $g=9{,}79\,\mathrm{m/s^2}$. Dado
+        que a pressão no topo do everest é $0{,}333p_0$, estime a massa molar $\mu$ do ar atmosférico.
+        \item Por fim, supondo que o ar seja composto de gás nitrogênio $\mathrm{N_2}$ e oxigênio $\mathrm{O_2}$,
+        encontre a proporção $x$ de oxigênio na atmosfera.
+    \end{enumerate}
+    \item Defina a taxa de evacuação $r$ de um gás como o volume perdido por unidade de tempo quando medido à
+    própria pressão e temperatura do gás. Encontre a pressão $p$ como função do tempo para um gás dentro
+    de um recipiente de volume $V$ que expulsa gás a uma taxa de evacuação constante $r$. Suponha que a
+    temperatura do gás não muda durante o processo e que a pressão inicial é $p_0$.
+    \item Um tubo vertical liso possui dois raios, com a área superior maior do que a inferior por uma parcela
+    $A$, equipado com um par de pistões de massa total $M$, como na figura abaixo.
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[scale=0.7]
+            \fill[lightgray] (1.5,1.5) -- (-1.5,1.5) -- (-1.5,0) -- (-1,0) -- 
+                (-1,-1.5) -- (1,-1.5) -- (1,0) -- (1.5,0) -- (1.5,1.5);
+            \fill[darkgray] (-1.5,2) -- (1.5,2) -- (1.5,1.5) -- (-1.5,1.5);
+            \draw[thick] (-1.5,2) -- node[pos=0.5,above] {$p_0$} (1.5,2) -- 
+                        (1.5,1.5) -- (-1.5,1.5) -- (-1.5,2);
+            \fill[darkgray] (-1,-2) -- (1,-2) -- (1,-1.5) -- (-1,-1.5);
+            \draw[thick] (-1,-2) -- node[pos=0.5,below] {$p_0$} (1,-2) -- 
+                        (1,-1.5) -- (-1,-1.5) -- (-1,-2);
+            \fill (-1.5,3) -- (-1.5,0) -- (-1,0) -- (-1,-3) -- 
+                    (-1.2,-3) -- (-1.2,-0.2) -- (-1.7,-0.2) -- (-1.7,3);
+            \draw[thick] (-1.5,3) -- (-1.5,0) -- (-1,0) -- (-1,-3);
+            \draw[thick] (1.5,3) -- (1.5,0) -- (1,0) -- (1,-3);
+            \fill (1.5,3) -- (1.5,0) -- (1,0) -- (1,-3) -- 
+                    (1.2,-3) -- (1.2,-0.2) -- (1.7,-0.2) -- (1.7,3);
+            \draw[ultra thick] (0,1.5) -- (0,-1.5);
+            \draw[ultra thick,->] (-2.3,1) -- node[pos=0.5,left] {$g$} (-2.3,-1);
+        \end{tikzpicture}
+    \end{figure}
+
+    Cada pistão move-se na seção correspondente. Uma quantidade $N$ de gás ideal de massa desprezível
+    encontra-se entre os pistões, e estes estão presos um ao outro por um fio inextensível de comprimento $L$.
+    A pressão externa aos tubos é $p_0$ e a gravidade local é $g$. Encontre
+    \begin{enumerate}
+        \item A temperatura mínima $T_0$ para que o sistema comece a subir
+        \item A temperatura mínima $T_1$ para que o pistão de baixo descarrilhe para o tubo de cima.
+    \end{enumerate}
+    \item Mostre que a para um processo num gás ideal
+    $$pV^\alpha=\text{const}\Leftrightarrow C=\text{const}.$$
+    \item Um gás nobre de $N$ moléculas é sujeito aos seguintes processos:
+    \begin{enumerate}
+        \item $p=p_0(1-V/V_0)$
+        \item $p=p_0(1-(V/V_0)^2)$
+        \item $p=p_0e^{-V/V_0}$
+    \end{enumerate}
+    Encontre a temperatura máxima e a capacidade térmica como função do volume em cada um deles
+    \item Considere um longo cilíndro horizontal semiaberto. Coloque-o para girar, com seu eixo na vertical 
+    posicionado no lado aberto, a uma velocidade angular $\omega$. Encontre a pressão $p$ do ar dentro do tubo
+    como função da distância $r$ do eixo de rotação. Suponha o ar um gás ideal de temperatura $T$ e massa molar
+    $\mu$.
+    \item (IPhO 1996) Considere duas bolas metálicas idênticas. Uma está pendurada no teto pela superfície
+    enquanto a outra está apoiada no chão, como na figura abaixo.
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \draw[thick] (-2,2) -- (-2,0.8);
+            \filldraw[fill=gray] (-2,0.2) circle (0.6);
+            \draw[ultra thick] (-3,2) -- (-1,2);
+            \filldraw[fill=gray] (2,-0.4) circle (0.6);
+            \draw[ultra thick] (3,-1) -- (1,-1);
+        \end{tikzpicture}
+    \end{figure}
+
+    Uma mesma pequena quantidade de calor é fornecida para ambas as bolas. Qual delas fica com uma temperatura
+    maior?
+    \item Considere um recipiente com paredes isolantes e rígidas inicialmente evacuado. Faz-se um pequeno
+    furo no recipiente e ar atmosférico entra lentamente. Encontre a temperatura do ar no interior do balão
+    no momento em que o fluxo de ar para dentro cessa. O ar atmosférico pode ser considerado um gás ideal
+    de coeficiente de Poisson $\gamma$.
+    \item O método de Rüchhardt para medir o coeficiente de Poisson do ar consiste no seguinte. Uma garrafa
+    de volume $V_0$ é preenchida com ar atmosférico. Seu gargalo tem área $A$ e neste é colocado uma bola justa
+    de massa $m$, solta a partir do repouso. Dado que a gravidade local é $g$ e a pressão atmosférica é $p_0$.
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}[scale=1.8]
+            \fill[lightgray] (0,0.8) circle (0.2);
+            \draw[thick] (0,0.8) node {$m$} circle (0.2);
+            \pgfmathparse{0.2/sin(15)}
+            \let\r\pgfmathresult
+            \draw[thick] (-0.2,1) -- (-0.2, 0) arc (105:435:\r) -- (0.2,1);
+            \draw (0,-\r) node {$V_0$};
+            \draw[ultra thick,->] (-1.1,0.5) -- node[pos=0.5,left] {$g$} (-1.1,-0.5);
+        \end{tikzpicture}
+    \end{figure}
+
+    Desprezando atritos e trocas de calor entre a garrafa e o meio externo e supondo que o volume do gargalo
+    é muito menor do que o do resto da garrafa, encontre
+    \begin{enumerate}
+        \item A distância máxima $L$ que a bola afunda no gargalo após ser solta
+        \item O período $\tau$ do movimento subsequente
+    \end{enumerate}
+    \item Um cilíndro vertical isolante possui a base fechada e dois pistões de peso desprezível. Entre a base 
+    e o primeiro pistão, diatérmico, existe certa quantidade de hélio. Entre o primeiro e o segundo pistão, 
+    isolante, existe certa quantidade de hidrogênio. Inicialmente, o volume de de hidrogênio é 1/3 do volume
+    de hélio. Dá se uma quantidade de calor $Q$ para o hélio e o pistão superior move-se para cima uma distância
+    $D$. Após certo tempo, há outra movimentação do pistão superior. Quanto ele se moveu e para qual direção?
+\end{enumerate}
+
+\end{document}
+
