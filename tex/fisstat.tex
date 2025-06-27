@@ -42,6 +42,7 @@
 \begin{document}
 
 \maketitle
+\tableofcontents
 
 \section{Introdução}
 
@@ -191,7 +192,7 @@ $$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
     $80\mathrm{^\circ F}$?
     \item A capacidade térmica molar do ouro é dada por $25{,}4\,\mathrm{J/mol\,^\circ C}$, a massa molar do
     ouro é $197\,\mathrm{g/mol}$ e sua densidade é $19{,}3\,\mathrm{g/cm^3}$. Dado que a Terra tem um raio de
-    $6400\,\mathrm {km}$, qual a capacidade térmica de uma bola de ouro do tamanho da Terra?
+    $6370\,\mathrm {km}$, qual a capacidade térmica de uma bola de ouro do tamanho da Terra?
     \item A água tem um calor específico de $1\,\mathrm{cal/g\,^\circ C}=4{,}2\,\mathrm{J/g\,^\circ C}$.
     Quanto calor é necessário para aumentar a temperatura de $1\,\mathrm{kg}$ de água de $0\,\mathrm{^\circ C}$
     até $100\,\mathrm{^\circ C}$?
@@ -199,7 +200,7 @@ $$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
     $\theta_1$ e $\theta_2$. Colocamos os dois em contato térmico e eventualmente obtemos equilíbrio. Qual
     a temperatura final dos dois? Comente sobre o caso $C_2\ll C_1$.
     \item A capacidade térmica de certo objeto está no gráfico abaixo:
-    \begin{figure}[h]
+    \begin{figure}[ht!]
         \centering
         \begin{tikzpicture}[scale=2]
             \draw[step=0.2,black,thin] (0,0) grid (3,2);
@@ -267,7 +268,7 @@ superfície em pequenas facetas $i$, cada uma com área $A_i$, deslocando-se per
 por uma distância $dx_i$, contribuindo uma variação de volume $dV_i=A_idx_i$ de forma que
 $\sum_idV_i=dV$.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
     \centering
     \begin{tikzpicture}
         \foreach \n in {1,...,3} {
@@ -326,7 +327,7 @@ volume.
 
 \subsubsection{Isocórico}
 O processo isocórico é o processo contínuo em que mantemos as coordenadas de trabalho (volume) constantes.
-\begin{figure}[h]
+\begin{figure}[ht!]
     \centering
     \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
         \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
@@ -347,7 +348,7 @@ $$C_V=\frac{\delta Q}{dT}=\frac{dU+pdV}{dT}=\frac{NR}{\gamma-1}.$$
 
 \subsubsection{Isobárico}
 O processo isobárico é o processo contínuo em que mantemos os coeficientes de trabalho (pressão) constantes.
-\begin{figure}[h]
+\begin{figure}[ht!]
     \centering
     \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
         \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
@@ -369,7 +370,7 @@ $$C_p=\frac{\delta Q}{dT}=\frac{dU+pdV}{dT}=\frac{\gamma NR}{\gamma-1}=\gamma C_
 \subsubsection{Isotérmico}
 O processo isotérmico é o processo contínuo em que mantemos a temperatura constante. Para o gás ideal
 isso significa simplesmente que $pV=\text{const.}$
-\begin{figure}[h]
+\begin{figure}[ht!]
     \centering
     \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
         \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
@@ -394,7 +395,7 @@ Como não há variação de temperatura, a capacidade térmica diverge.
 O processo adiabático é o processo contínuo em que mantemos o sistema isolado, sem perimitir trocas
 de calor.
 
-\begin{figure}[h]
+\begin{figure}[ht!]
     \centering
     \begin{tikzpicture}[decoration={markings,mark=at position 0.5 with {\arrow{>}}}]
         \draw [->, thick] (0,0) -- (5,0) node[below] {$V$};
@@ -440,12 +441,12 @@ Como não há calor absorvido, a capacidade térmica é zero.
         encontre a proporção $x$ de oxigênio na atmosfera.
     \end{enumerate}
     \item Defina a taxa de evacuação $r$ de um gás como o volume perdido por unidade de tempo quando medido à
-    própria pressão e temperatura do gás. Encontre a pressão $p$ como função do tempo para um gás dentro
+    própria pressão e temperatura do gás. Encontre a pressão $p$ como função do tempo $t$ para um gás dentro
     de um recipiente de volume $V$ que expulsa gás a uma taxa de evacuação constante $r$. Suponha que a
     temperatura do gás não muda durante o processo e que a pressão inicial é $p_0$.
     \item Um tubo vertical liso possui dois raios, com a área superior maior do que a inferior por uma parcela
     $A$, equipado com um par de pistões de massa total $M$, como na figura abaixo.
-    \begin{figure}[h]
+    \begin{figure}[ht!]
         \centering
         \begin{tikzpicture}[scale=0.7]
             \fill[lightgray] (1.5,1.5) -- (-1.5,1.5) -- (-1.5,0) -- (-1,0) -- 
@@ -467,29 +468,38 @@ Como não há calor absorvido, a capacidade térmica é zero.
         \end{tikzpicture}
     \end{figure}
 
-    Cada pistão move-se na seção correspondente. Uma quantidade $N$ de gás ideal de massa desprezível
-    encontra-se entre os pistões, e estes estão presos um ao outro por um fio inextensível de comprimento $L$.
-    A pressão externa aos tubos é $p_0$ e a gravidade local é $g$. Encontre
+    Cada pistão move-se na seção correspondente, e o menor possui massa $m$ e área $a$. Uma quantidade $N$ 
+    de gás ideal de massa desprezível encontra-se entre os pistões, e estes estão presos um ao outro por 
+    um fio inextensível de comprimento $L$. A pressão externa aos tubos é $p_0$ e a gravidade local é $g$. 
+    Inicialmente, a temperatura do gás é baixa, de forma que o pistão superior está apoiado na junção
+    das duas seções, e o fio encontra-se frouxo.
     \begin{enumerate}
-        \item A temperatura mínima $T_0$ para que o sistema comece a subir
-        \item A temperatura mínima $T_1$ para que o pistão de baixo descarrilhe para o tubo de cima.
+        \item Encontre a temperatura $T_0$ a partir da qual o fio fica tensionado
+        \item Encontre a temperatura $T_1$ a partir da qual o pistão superior começa a subir. Esta é
+        maior ou menor do que $T_0$?
+        \item Encontre a temperatura máxima $T_\text{máx}$ a partir da qual o pistão de baixo descarrilha
+        de sua seção e o gás vaza para o meio externo
+        \item Faça um gráfico da pressão $p$ como função da temperatura para este sistema
     \end{enumerate}
     \item Mostre que a para um processo num gás ideal
     $$pV^\alpha=\text{const}\Leftrightarrow C=\text{const}.$$
-    \item Um gás nobre de $N$ moléculas é sujeito aos seguintes processos:
+    encontrando uma relação entre $C$ e $\alpha$ para $N$ mols de um gás ideal de coeficiente de Poisson 
+    $\gamma$
+    \item Um gás ideal de coeficiente de Poission $\gamma$ com $N$ moléculas é sujeito aos seguintes processos:
     \begin{enumerate}
         \item $p=p_0(1-V/V_0)$
         \item $p=p_0(1-(V/V_0)^2)$
         \item $p=p_0e^{-V/V_0}$
     \end{enumerate}
-    Encontre a temperatura máxima e a capacidade térmica como função do volume em cada um deles
+    Onde $p_0$ e $V_0$ são constantes positivas. Encontre a temperatura máxima em termos de $T_0=\frac{p_0V_0}{NR}$
+    e o calor específico molar como função do volume $V$ e das constantes $\gamma$, $R$, e $V_0$.
     \item Considere um longo cilíndro horizontal semiaberto. Coloque-o para girar, com seu eixo na vertical 
     posicionado no lado aberto, a uma velocidade angular $\omega$. Encontre a pressão $p$ do ar dentro do tubo
     como função da distância $r$ do eixo de rotação. Suponha o ar um gás ideal de temperatura $T$ e massa molar
-    $\mu$.
+    $\mu$, e que a pressão atmosférica é $p_0$.
     \item (IPhO 1996) Considere duas bolas metálicas idênticas. Uma está pendurada no teto pela superfície
     enquanto a outra está apoiada no chão, como na figura abaixo.
-    \begin{figure}[h]
+    \begin{figure}[ht!]
         \centering
         \begin{tikzpicture}
             \draw[thick] (-2,2) -- (-2,0.8);
@@ -505,11 +515,11 @@ Como não há calor absorvido, a capacidade térmica é zero.
     \item Considere um recipiente com paredes isolantes e rígidas inicialmente evacuado. Faz-se um pequeno
     furo no recipiente e ar atmosférico entra lentamente. Encontre a temperatura do ar no interior do balão
     no momento em que o fluxo de ar para dentro cessa. O ar atmosférico pode ser considerado um gás ideal
-    de coeficiente de Poisson $\gamma$.
+    de coeficiente de Poisson $\gamma$ e temperatura $T_0$.
     \item O método de Rüchhardt para medir o coeficiente de Poisson do ar consiste no seguinte. Uma garrafa
     de volume $V_0$ é preenchida com ar atmosférico. Seu gargalo tem área $A$ e neste é colocado uma bola justa
     de massa $m$, solta a partir do repouso. Dado que a gravidade local é $g$ e a pressão atmosférica é $p_0$.
-    \begin{figure}[h]
+    \begin{figure}[ht!]
         \centering
         \begin{tikzpicture}[scale=1.8]
             \fill[lightgray] (0,0.8) circle (0.2);
@@ -535,5 +545,34 @@ Como não há calor absorvido, a capacidade térmica é zero.
     $D$. Após certo tempo, há outra movimentação do pistão superior. Quanto ele se moveu e para qual direção?
 \end{enumerate}
 
+\section{Respostas dos problemas}
+    1.1a) extensiva\\1.1b) intensiva\\1.1c) intensiva\\1.1d) extensiva\\1.2) $\theta_C=
+    \frac{5\,\mathrm{^\circ C}}{9\,\mathrm{^\circ F}}(\theta_F-32\,\mathrm{^\circ F})=27\,\mathrm{^\circ C}$\\
+    1.3) $C=\frac{4\pi\rho cR^3}{3\mu}=2{,}69\times10^27\,\mathrm{J/K}$\\1.4) $Q=mc\Delta\theta=4{,}2\,\mathrm J$
+    \\1.5) $\theta=\frac{C_1\theta_1+C_2\theta_2}{C_1+C_2}\approx\theta_1+\frac{C_2}{C_1}(\theta_2-\theta_1)$\\
+    1.6) $Q=\int_{\theta_i}^{\theta_f}C(\theta)\,d\theta=155\,\mathrm J$\\1.7a) $c=\frac{dU}{dT}=\frac{U_0T_Ce^{T_C/T}}
+    {mT^2(e^{T_C/T}-1)^2}$\\1.7b) $c\rightarrow\frac{U_0T_C}{mT^2}e^{-T_C/T},\,c\rightarrow\frac{U_0}{mT_C}$\\
+    1.7c) $Q=\Delta U=\frac{U_0\sqrt e}{e-1}$\\1.8) $C=\frac{PT^3}{4aT_0^3}$\\2.1a) $\rho=\frac{\mu p}{RT}$\\
+    2.1b) $\frac{dp}{dh}=-\frac{\mu g}{RT}p$\\2.1c) $p=p_0e^{-\mu gh/RT}$\\2.1d) $\mu=\frac{RT}{gh}\log\left(
+    \frac{p_0}{p}\right)=28.8\,\mathrm{g/mol}$\\2.1e) $x=\frac{\mu-\mu_\mathrm{N_2}}{\mu_\mathrm{O_2}-
+    \mu_\mathrm{N_2}}=20\%$\\2.2) $p=p_0e^{-rt/V}$\\2.3a) $T_0=\frac{(p_0a-mg)L}{NR}$\\2.3b)$T_1=\frac
+    {(p_0A+Mg)L}{NR}>T_0$\\2.3c) $T_\text{máx}=T_1\left(1+\frac{a}{A}\right)$\\2.3d)
+    \begin{tikzpicture}
+        \draw[very thick,->] (0,0) -- (3,0) node[below] {$T$};
+        \draw[very thick,->] (0,0) -- (0,2) node[above] {$p$};
+        \draw[ultra thick] (0,0.6) -- (0.4,0.6) -- (1.3,1.5) -- (2.3,1.5);
+        \filldraw[fill=white] (2.3,1.5) circle (0.05);
+        \draw (0.1,0.6) -- (-0.1,0.6) node[left] {$p_0-mg/a$};
+        \draw (0.1,1.5) -- (-0.1,1.5) node[left] {$p_0+Mg/a$};
+        \draw (0.4,0.1) -- (0.4,-0.1) node[below] {$T_0$};
+        \draw (1.3,0.1) -- (1.3,-0.1) node[below] {$T_1$};
+        \draw (2.3,0.1) -- (2.3,-0.1) node[below] {$T_\text{máx}$};
+    \end{tikzpicture}
+    \\2.4) $C=NR\left(\frac{1}{\gamma-1}-\frac{1}{\alpha-1}\right)$\\2.5a) $T=\frac{T_0}{4},\,
+    c=R\left(\frac{1}{\gamma-1}+\frac{V_0-V}{V_0-2V}\right)$\\2.5b) $T=\frac{2T_0}{3\sqrt3},\,
+    c=R\left(\frac{1}{\gamma-1}+\frac{V_0^2-V^2}{V_0^2-3V^2}\right)$\\2.5c) $T=\frac{T_0}{e},\,
+    c=R\left(\frac{1}{\gamma-1}+\frac{V_0}{V_0-V}\right)$\\2.6) $p=p_0e^\frac{\mu\omega^2r^2}
+    {2RT}$\\2.7) a bolinha pendurada\\2.8) $T=\gamma T_0$\\2.9a) $L=\frac{2mgV_0}{\gamma A^2p_0}$\\
+    2.9b) $\tau=\frac{2\pi}{A}\sqrt\frac{mV_0}{\gamma p_0}$\\2.10) cai de $D/7$
 \end{document}
 

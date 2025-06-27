@@ -4,18 +4,6 @@
     <meta charset="UTF-8">
   </head>
   <body>
-    <form id="tex_cc" method="post" action="https://texlive.net/cgi-bin/latexcgi" enctype="multipart/form-data" hidden>
-      <textarea id="tex_src" type="text" name="filecontents[]"></textarea>
-      <input type="text" name="filename[]" value="document.tex"/>
-      <input type="text" name="return" value="make4ht"/>
-    </form>
-    <a href="javascript:{}" onclick="latexcgi('/tex/fisstat.tex')">stat phys notes (portuguese)</a>
+    <a href="/fisstat.html">statistical physics lecture notes (portuguese)</a>
   </body>
-  <script type=module>
-    window.latexcgi = async (uri) => {
-      const content = await fetch(uri);
-      document.getElementById("tex_src").textContent = await content.text();
-      document.getElementById("tex_cc").submit();
-    }
-  </script>
 </html>
