@@ -9,6 +9,7 @@
 \usepackage[margin=2cm]{geometry}
 \usepackage{tikz}
 \usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{intersections}
 \usetikzlibrary{spath3}
@@ -194,6 +195,7 @@ $$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
         \item o volume de gasolina no tanque de um carro
         \answer{extensiva}
     \end{enumerate}
+
     \item A escala de temperatura Celsius é definida com $0\,\mathrm{^\circ C}$ no ponto de fusão da água,
     $100\,\mathrm{^\circ C}$ no ponto de ebulição da água, e determinada pela dilatação de um filamento 
     de álcool nos pontos intermediários. A escala Farenheit também é definida pela dilatação de um filamento
@@ -202,18 +204,22 @@ $$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
     $80\mathrm{^\circ F}$?
     \answer{$\theta_C=\frac{5\,\mathrm{^\circ C}}{9\,\mathrm{^\circ F}}(\theta_F-32\,\mathrm{^\circ F})=
     27\,\mathrm{^\circ C}$}
+
     \item A capacidade térmica molar do ouro é dada por $25{,}4\,\mathrm{J/mol\,^\circ C}$, a massa molar do
     ouro é $197\,\mathrm{g/mol}$ e sua densidade é $19{,}3\,\mathrm{g/cm^3}$. Dado que a Terra tem um raio de
     $6370\,\mathrm {km}$, qual a capacidade térmica de uma bola de ouro do tamanho da Terra?
     \answer{$C=\frac{4\pi\rho cR^3}{3\mu}=2{,}69\times10^{27}\,\mathrm{J/K}$}
+
     \item A água tem um calor específico de $1\,\mathrm{cal/g\,^\circ C}=4{,}2\,\mathrm{J/g\,^\circ C}$.
     Quanto calor é necessário para aumentar a temperatura de $1\,\mathrm{kg}$ de água de $0\,\mathrm{^\circ C}$
     até $100\,\mathrm{^\circ C}$?
     \answer{$Q=mc\Delta\theta=4{,}2\,\mathrm J$}
+
     \item Considere dois objetos de capacidade térmica $C_1$ e $C_2$, com respectivas temperaturas inicias
     $\theta_1$ e $\theta_2$. Colocamos os dois em contato térmico e eventualmente obtemos equilíbrio. Qual
     a temperatura final dos dois? Comente sobre o caso $C_2\ll C_1$.
     \answer{$\theta=\frac{C_1\theta_1+C_2\theta_2}{C_1+C_2}\approx\theta_1+\frac{C_2}{C_1}(\theta_2-\theta_1)$}
+
     \item A capacidade térmica de certo objeto está no gráfico abaixo:
     \begin{figure}[ht!]
         \centering
@@ -231,6 +237,7 @@ $$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
     Qual o calor necessário para aumentar a temperatura do objeto de $10\,\mathrm{^\circ C}$ até 
     $20\,\mathrm{^\circ C}$?
     \answer{$Q=\int_{\theta_i}^{\theta_f}C(\theta)\,d\theta=155\,\mathrm J$}
+
     \item (SOIF 2023) Considere um sistema físico de massa m cuja energia interna é dada pela expressão
     $$U=\frac{U_0}{e^{T_C/T}-1},$$
     em que $T_C$ representa uma temperatura característica do sistema, $U_0$ é uma constante, e  $T$ a sua temperatura.
@@ -242,6 +249,7 @@ $$H=U-(y_1X_1+\cdots+y_nX_n)=\int C_p\,d\theta.$$
         \item Calcule o calor necessário para levar o sistema de $T_C$ até $2T_C$.
         \answer{$Q=\Delta U=\frac{U_0\sqrt e}{e-1}$}
     \end{enumerate}
+
     \item (IPhO 1996) Uma peça de metal termicamente isolada é aquecida sob pressão atmosférica por uma corrente
     elétrica de forma que recebe energia elétrica a uma potência constante $P$. Isso leva ao aumento da temperatura
     absoluta $T$ do metal com o tempo $t$ como:
@@ -465,11 +473,34 @@ Como não há calor absorvido, a capacidade térmica é zero.
         encontre a proporção $x$ de oxigênio na atmosfera.
         \answer{$x=\frac{\mu-\mu_\mathrm{N_2}}{\mu_\mathrm{O_2}- \mu_\mathrm{N_2}}=20\%$}
     \end{enumerate}
-    \item Defina a taxa de evacuação $r$ de um gás como o volume perdido por unidade de tempo quando medido à
-    própria pressão e temperatura do gás. Encontre a pressão $p$ como função do tempo $t$ para um gás dentro
-    de um recipiente de volume $V$ que expulsa gás a uma taxa de evacuação constante $r$. Suponha que a
+
+    \item (SOIF 2001) Um cilíndro cheio de gás tem a área da seção reta igual a $A=10\,\mathrm{cm^2}$ e é fechado
+    por um êmbolo pesado e móvel. O cilíndro começa a subir com aceleração de $a=20\,\mathrm{m/s^2}$ e, mantendo
+    a temperatura do gás constante, seu volume fica $\eta=2/3$ do original. Ache a massa $M$ do êmbolo sabendo
+    que a gravidade local é $g=10\,\mathrm{m/s^2}$ e a pressão atmosférica é $p_0=10^5\,\mathrm{N/m^2}$.
+    \answer{$M=\frac{(1-\eta)p_0A}{\eta a-(1-\eta)g}=3{,}3\,\mathrm{kg}$}
+
+    \item (Irodov) Defina a taxa de evacuação $r$ de um gás como o volume perdido por unidade de tempo quando 
+    medido à própria pressão e temperatura do gás. Encontre a pressão $p$ como função do tempo $t$ para um gás 
+    dentro de um recipiente de volume $V$ que expulsa gás a uma taxa de evacuação constante $r$. Suponha que a
     temperatura do gás não muda durante o processo e que a pressão inicial é $p_0$.
     \answer{$p=p_0e^{-rt/V}$}
+
+    \item Considere um cilíndro vertical fechado em baixo e tampado por um pistão móvel de massa $M$.
+    Dentro do cilíndro há uma massa $m$ de gás ideal de massa molar $\mu$. Sendo $g$ a aceleração da gravidade
+    e supondo que fora do cilíndro há vácuo, encontre a altura $H$ do pistão móvel como função da temperatura 
+    $T$ do gás.
+    \answer{$H=\frac{RT}{\mu g}\log\left(1+\frac{m}{M}\right)$}
+
+    \item (SOIF 2005) Um cilíndro com paredes termicamente isoladas contém duas espécies de gás distintas,
+    separadas por uma parede isolante. O primeiro gás tem coeficiente de Poisson $\gamma_1$, pressão $p_1$,
+    volume $V_1$ e temperatura $T_1$. O segundo tem respectivos $\gamma_2,p_2,V_2$ e $T_2$. Como fica a 
+    pressão $p$ e temperatura $T$ no cilíndro após retirarmos a parede interna e esperarmos o equilíbrio 
+    termodinâmico?
+    \answer{$T=\frac{\frac{p_1V_1}{\gamma_1-1}+\frac{p_2V_2}{\gamma_2-1}}
+    {\frac{p_1V_1}{T_1(\gamma_1-1)}+\frac{p_2V_2}{T_2(\gamma_2-1)}},
+    \quad p=\frac{\frac{p_1V_1}{T_1}+\frac{p_2V_2}{T_2}}{V_1+V_2}T$}
+
     \item Um tubo vertical liso possui dois raios, com a área superior maior do que a inferior por uma parcela
     $A$, equipado com um par de pistões de massa total $M$, como na figura abaixo.
     \begin{figure}[ht!]
@@ -521,11 +552,46 @@ Como não há calor absorvido, a capacidade térmica é zero.
             \draw (2.3,0.1) -- (2.3,-0.1) node[below] {$T_\text{máx}$};
         \end{tikzpicture}}
     \end{enumerate}
+
     \item Mostre que a para um processo num gás ideal
     $$pV^\alpha=\text{const}\Leftrightarrow C=\text{const}.$$
     encontrando uma relação entre $C$ e $\alpha$ para $N$ mols de um gás ideal de coeficiente de Poisson 
     $\gamma$
     \answer{$C=NR\left(\frac{1}{\gamma-1}-\frac{1}{\alpha-1}\right)$}
+
+    \item (Irodov) Certa quantidade de gás ideal de coeficiente de Poisson $\gamma$ realiza um 
+    processo em que sua capacidade térmica é função da temperatura dada por $C=p_0V_0/T$. Encontre
+    uma relação entre a pressão e o volume do gás nesse processo, sabendo que ele passa pelo ponto
+    $(p_0,V_0,T_0)$.
+    \answer{$pV^\gamma=p_0V_0^\gamma e^{\left(1-\frac{p_0V_0}{pV}\right)}$}
+
+    \item Um recipiente isolado termicamente é dividido por um pistão que pode movimentar-se sem atrito,
+    conforme a figura abaixo.
+    \begin{figure}[ht!]
+        \centering
+        \begin{tikzpicture}
+            \fill (0,0) -- (5,0) -- (5,2) -- (0,2) -- (0,0) -- (-0.2,-0.2) 
+            -- (-0.2,2.2) -- (5.2,2.2) -- (5.2,-0.2) -- (-0.2,-0.2) -- (0,0);
+            \fill[lightgray] (0,0) -- (2,0) -- (2,2) -- (0,2) -- (0,0);
+            \fill[darkgray] (2,0) -- (2,2) -- (2.2,2) -- (2.2,0) -- (2,0);
+            \draw[very thick] (2,0) -- (2,2) -- (2.2,2) -- (2.2,0) -- (2,0);
+            \draw[decoration={
+                coil,
+                segment length=5,
+                aspect=0.3,
+                amplitude=8,
+                pre length=10,
+                post length=10
+            },decorate,ultra thick] (2.2,1) -- (5,1);
+        \end{tikzpicture}
+    \end{figure}
+
+    A parte da esquerda é preenchida com um mol de gás ideal monoatômico, e a parte da direita encontra-se
+    evacuada. O pistão é conectado à parede da direita por meio de uma mola cujo comprimento livre é
+    igual ao comprimento total do recipiente. Determine o calor especifico molar $c$ do gás sob essas condições
+    em função da constante dos gases ideais $R$.
+    \answer{$c=2R$}
+
     \item Um gás ideal de coeficiente de Poission $\gamma$ com $N$ moléculas é sujeito aos seguintes processos:
     \begin{enumerate}
         \item $p=p_0(1-V/V_0)$
@@ -537,11 +603,35 @@ Como não há calor absorvido, a capacidade térmica é zero.
     \end{enumerate}
     Onde $p_0$ e $V_0$ são constantes positivas. Encontre a temperatura máxima em termos de $T_0=\frac{p_0V_0}{NR}$
     e o calor específico molar como função do volume $V$ e das constantes $\gamma$, $R$, e $V_0$.
+
+    \item (SOIF 2004) Considere um cilíndro hermeticamente vedado com paredes adiabáticas, fechado em ambas as
+    extremidades e dividido em duas partes por um êmbolo isolante que pode mover-se livremente sem atrito.
+    Inicialmente o volume, pressão e temperatura de gases em cada parte do cilíndro é $V_0,p_0$ e $T_0$,
+    respectivamente. No lado direito do cilíndro é colocado um aquecedor que aquece o gás até que sua pressão
+    atinja $\alpha p_0$. Considerando os gases ideais de coeficiente de Poisson $\gamma$, encontre
+    \begin{enumerate}
+        \item O volume final do lado esquerdo
+        \answer{$V_L=V_0\alpha^{-\frac{1}{\gamma}}$}
+        \item a temperatura final do lado esquerdo
+        \answer{$T_L=T_0\alpha^{1-\frac{1}{\gamma}}$}
+        \item a temperatura final do lado direito
+        \answer{$T_R=T_0\alpha\left(2-\alpha^{-\frac{1}{\gamma}}\right)$}
+        \item o trabalho efetuado sobre o gás do lado esquerdo
+        \answer{$W=p_0V_0\left(\alpha^{1-\frac{1}{\gamma}}-1\right)$}
+    \end{enumerate}
+
     \item Considere um longo cilíndro horizontal semiaberto. Coloque-o para girar, com seu eixo na vertical 
     posicionado no lado aberto, a uma velocidade angular $\omega$. Encontre a pressão $p$ do ar dentro do tubo
     como função da distância $r$ do eixo de rotação. Suponha o ar um gás ideal de temperatura $T$ e massa molar
-    \answer{$p=p_0e^\frac{\mu\omega^2r^2} {2RT}$}
     $\mu$, e que a pressão atmosférica é $p_0$.
+    \answer{$p=p_0e^\frac{\mu\omega^2r^2}{2RT}$}
+
+    \item Um recipiente contém $N$ móls de hélio. Este gás passa por um processo termodinâmico em que sua
+    capacidade térmica depende da temperatura como $C=\frac{3NRT}{4T_0}$, sendo $T_0$ a temperatura inicial
+    do gás. Encontre o trabalho realizado sobre o gás ao longo deste processo até que ele seja comprimido
+    ao seu volume mínimo.
+    \answer{$W=\frac{3}{8}NRT_0$}
+
     \item (IPhO 1996) Considere duas bolas metálicas idênticas. Uma está pendurada no teto pela superfície
     enquanto a outra está apoiada no chão, como na figura abaixo.
     \begin{figure}[ht!]
@@ -558,11 +648,13 @@ Como não há calor absorvido, a capacidade térmica é zero.
     Uma mesma pequena quantidade de calor é fornecida para ambas as bolas. Qual delas fica com uma temperatura
     maior?
     \answer{a bolinha pendurada}
+
     \item Considere um recipiente com paredes isolantes e rígidas inicialmente evacuado. Faz-se um pequeno
     furo no recipiente e ar atmosférico entra lentamente. Encontre a temperatura do ar no interior do balão
     no momento em que o fluxo de ar para dentro cessa. O ar atmosférico pode ser considerado um gás ideal
     de coeficiente de Poisson $\gamma$ e temperatura $T_0$.
     \answer{$T=\gamma T_0$}
+
     \item O método de Rüchhardt para medir o coeficiente de Poisson do ar consiste no seguinte. Uma garrafa
     de volume $V_0$ é preenchida com ar atmosférico. Seu gargalo tem área $A$ e neste é colocado uma bola justa
     de massa $m$, solta a partir do repouso. Dado que a gravidade local é $g$ e a pressão atmosférica é $p_0$.
@@ -585,12 +677,50 @@ Como não há calor absorvido, a capacidade térmica é zero.
         \item O período $\tau$ do movimento subsequente
         \answer{$\tau=\frac{2\pi}{A}\sqrt\frac{mV_0}{\gamma p_0}$}
     \end{enumerate}
+    Pode ser útil que
+    $$|nx|\ll1\Rightarrow(1+x)^n\approx1+nx.$$
+
+    \item (200 PPP) Considere um cilíndro isolado fechado que possui uma parede condutora móvel em seu interior 
+    que separa duas quantidades iguais de gás ideal de coeficiente de Poisson $\gamma$. Se aplicarmos uma força 
+    externa constante muito grande nesta parede e esperarmos o equilíbrio térmico, como ficará a razão entre os 
+    volumes das partes expandidas e contraidas?
+    \answer{$r=\frac{\sqrt\gamma+1}{\sqrt\gamma-1}$}
+
     \item Um cilíndro vertical isolante possui a base fechada e dois pistões de peso desprezível. Entre a base 
     e o primeiro pistão, diatérmico, existe certa quantidade de hélio. Entre o primeiro e o segundo pistão, 
     isolante, existe certa quantidade de hidrogênio. Inicialmente, o volume de de hidrogênio é 1/3 do volume
     de hélio. Dá se uma quantidade de calor $Q$ para o hélio e o pistão superior move-se para cima uma distância
     $D$. Após certo tempo, há outra movimentação do pistão superior. Quanto ele se moveu e para qual direção?
     \answer{cai de $D/7$}
+
+    \item Um fino tubo circular de raio $r$ é disposto como na figura abaixo.
+    \begin{figure}[ht!]
+        \centering
+        \begin{tikzpicture}[scale=0.7]
+            \fill[lightgray,even odd rule] (0,0) circle (2.3) (0,0) circle (2.7);
+            \draw[very thick] (0,0) circle (2.3);
+            \draw[very thick] (0,0) circle (2.7);
+            \draw[ultra thick] (0,-2.7) -- (0,-2.3);
+            \fill ({2.5*sin(10)},{2.5*cos(10)}) circle (0.2);
+            \draw[thick,dashed] (0,2.3) -- node[pos=0.4,left] {$r$} (0,0) -- ({2.3*sin(10)},{2.3*cos(10)});
+            \draw[ultra thick,->] (-3.2,1) -- node[pos=0.5,left] {$g$} (-3.2,-1);
+        \end{tikzpicture}
+    \end{figure}
+
+    Na parte inferior do tubo há uma parede, e dentro dele há uma bolinha de massa $m$ que pode
+    se deslocar sem atrito ao longo do tubo, separando-o em duas partes ambas contendo uma quantidade
+    $N$ de gás ideal. Quando a temperatura do sistema é alta, a bolinha tende a ficar equilibrada
+    no ápice do tubo. No entanto quando a temperatura cai abaixo de certo valor $T_c$, este equilíbrio
+    mecânico torna-se instável e a bolinha cai para algum dos lados e encontra um novo ponto de equilíbrio.
+    \begin{enumerate}
+        \item Encontre a temperatura crítica $T_c$
+        \answer{$T_c=\frac{\pi^2mgr}{2NR}$}
+        \item A capacidade térmica do sistema é descontínua em $T_c$. Encontre a diferença de capacidade
+        térmica $\Delta C$ entre temperaturas um pouco menores que $T_c$ e um pouco maiores que $T_c$.
+        \answer{$\Delta C=\frac{2NR}{1+\pi^2/6}$}
+    \end{enumerate}
+    Pode ser útil que
+    $$|x|\ll1\Rightarrow\sin x\approx x-\frac{1}{6}x^3.$$
 \end{enumerate}
 
 \appendix
