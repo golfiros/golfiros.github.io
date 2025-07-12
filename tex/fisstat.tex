@@ -4,7 +4,7 @@
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0.4pt}
 \fancyheadoffset{0.5cm}
-\setlength{\headheight}{15pt}
+\setlength{\headheight}{20pt}
 
 \usepackage[margin=2cm]{geometry}
 \usepackage{tikz}
@@ -27,11 +27,13 @@
 \newcommand{\answer}[1]{\listxadd{\problemanswers}{\thesection.\theenumi\ifnum\@enumdepth=2\theenumii\fi) \unexpanded{#1}}}
 \makeatother
 
+\newcommand{\pd}[3]{\ifblank{#3}{}{\left(}\frac{\partial #1}{\partial #2}\ifblank{#3}{}{\right)_{#3}}}
+
 \usepackage{ragged2e}
 \usepackage{epigraph}
 \setlength\epigraphwidth{.8\textwidth}
 
-\newtheorem{theorem}{Teorema}
+\newtheorem{theorem}{Teorema}[section]
 \newtheorem{lemma}{Lema}
 \theoremstyle{definition}
 \newtheorem*{definition}{Definição}
@@ -569,10 +571,8 @@ Como não há calor absorvido, a capacidade térmica é zero.
         \begin{tikzpicture}[scale=1.8]
             \fill[lightgray] (0,0.8) circle (0.2);
             \draw[thick] (0,0.8) node {$m$} circle (0.2);
-            \pgfmathparse{0.2/sin(15)}
-            \let\r\pgfmathresult
-            \draw[thick] (-0.2,1) -- (-0.2, 0) arc (105:435:\r) -- (0.2,1);
-            \draw (0,-\r) node {$V_0$};
+            \draw[thick] (-0.2,1) -- (-0.2, 0) arc (105:435:{0.2/sin(15)}) -- (0.2,1);
+            \draw (0,{-0.2/sin(15)}) node {$V_0$};
             \draw[ultra thick,->] (-1.1,0.5) -- node[pos=0.5,left] {$g$} (-1.1,-0.5);
         \end{tikzpicture}
     \end{figure}
@@ -595,8 +595,372 @@ Como não há calor absorvido, a capacidade térmica é zero.
 
 \appendix
 
+\section{Cálculo multivariável}
+
+As técnicas do estudo do comportamento local de funções podem ser facilmente extendidas para funções cujo
+domínio, ao invés de intervalos em $\mathbb R$, são bolas no $\mathbb R^n$. Muitos resultados tornam-se 
+mais claros nessa linguagem e portanto devemos dar uma boa atenção para ela. Nossos objetos de estudo serão
+funções $f:\mathbb R^n\rightarrow\mathbb R$.
+
+\subsection{A derivada direcional}
+
+Começamos com a seguinte questão: como definir a noção de derivada, ou taxa de variação, para uma função que
+depende de mais de um parâmetro? Lembrando que quando haviamos apenas uma variável, a derivada de uma função
+$g:\mathbb R\rightarrow\mathbb R$ era definida como
+$$g'(t)=\lim\limits_{h\rightarrow0}\frac{g(t+h)-g(t)}{h}.$$
+Para conseguimos utilizar essa mesma ideia em várias variáveis, considere alguma trajetória no espaço 
+$\mathbb R^n$,
+$$\gamma(t)=(\gamma^1(t),\gamma^2(t),\dots,\gamma^n(t)).$$
+A composição $f\circ\gamma$, portanto, é uma função em que podemos definir a derivada tradicional:
+$$(f\circ\gamma)'(t)\lim\limits_{h\rightarrow0}\frac{f(\gamma(t+h))-f(\gamma(t))}{h},$$
+chamada de \textit{derivada direcional} ou \textit{derivada total} de $f$ em $\gamma(t)$ ao longo de $\gamma'(t)$. 
+Uma notação alternativa para este objeto 
+No entanto, gostariamos de definir uma noção de derivada independente da trajetória utilizada, e a maneira 
+que escrevemos acima parece sugerir que não há uma trivial de separar qual parte da derivada é devido à função $f$,
+e qual é devido a nossa escolha de trajetória $\gamma$. Somando vários zeros na expressão no interior do limite, 
+no entanto:
+\begin{align*}
+    \frac{f(\gamma(t+h))-f(\gamma(t))}{h}
+    &=\frac{f(\gamma^1(t+h),\gamma^2(t+h),\dots,\gamma^n(t+h))-f(\gamma^1(t),\gamma^2(t),\dots,\gamma^n(t))}{h}\\
+    &=\frac{f(\gamma^1(t+h),\gamma^2(t+h),\dots,\gamma^n(t+h))-f(\gamma^1(t),\gamma^2(t+h),\dots,\gamma^n(t+h))}{h}\\
+    &+\frac{f(\gamma^1(h),\gamma^2(t+h),\dots,\gamma^n(t+h))-f(\gamma^1(t),\gamma^2(t),\dots,\gamma^n(t+h))}{h}\\
+    &+\cdots\\
+    &+\frac{f(\gamma^1(h),\gamma^2(t),\dots,\gamma^n(t+h))-f(\gamma^1(t),\gamma^2(t),\dots,\gamma^n(t))}{h}
+\end{align*}
+e podemos usar uma lógica análoga à regra da cadeia para escrever o limite de cada uma destas frações,
+afirmando que
+$$\lim\limits_{h\rightarrow0}\frac{f(\dots,\gamma^i(t+h),\dots)
+-f(\dots,\gamma^i(t),\dots)}{h}=f_{,i}(\gamma(t))\gamma^i{'}(t)$$
+onde
+$$f_{,i}(x)\equiv\lim\limits_{h\rightarrow0}\frac{f(\dots,x^i+h,\dots)-f(\dots,x^i,\dots)}{h}$$
+é chamada a \textit{derivada parcial} de $f$ na direção $x^i$. Essa é calculada assim como uma derivada
+usual, somente na variável de interesse enquanto as outras são consideradas coeficientes constantes.
+Outras notações comuns para essa grandeza são
+$$\partial_i f\quad\text{ou}\quad\pd{f}{x^i}{}.$$
+Nossa expressão para a derivada total então fica
+$$(f\circ\gamma)'(t)=f_{,1}(\gamma(t))\gamma^{1}{'}(t)+\cdots+f_{,n}(\gamma(t))\gamma^{n}{'}(t).$$
+Isso nos mostra que a derivada direcional depende apenas do valor e da primeira derivada da trajetória.
+ou deixando a trajetória em questão implícita, escrevemos uma variação genérica do valor de $f$ em termos
+das variações dos valores das coordenadas como
+$$df=f_{,1}dx^1+\cdots+f_{,n}dx^n.$$
+Podemos definir também derivadas de maior ordem encadeando esse procedimento recursivamente
+$$f_{,i_1i_2\dots i_N}(x)=(f_{,i_2\dots i_N})_{,i_1}(x),$$
+também com notações alternativas
+$$\partial_{i_1\dots i_N} f\quad\text{ou}\quad\frac{\partial^N f}{\partial x^{i_1}\cdots\partial x^{i_N}}.$$
+Quando essas derivadas são contínuas, elas não dependem da ordem em que as tomamos, valendo que
+$$f_{,i_1\dots i_Nj_1\dots j_M}(x)=f_{,j_1\dots j_Mi_1\dots i_N}(x).$$
+
+\subsection{Funções Implícitas}
+
+Muitas vezes nos encontramos em situações onde ao invés de estar interessados em funções, queremos entender
+o comportamento de variáveis relacionadas por equações. Considere o caso em que temos $n+m$ variáveis
+que vamos denotar por $x^1,\dots,x^n,y^1,\dots,y^m$, sujeitas a $m$ equações
+\begin{align*}
+    f_1(x^1,\dots,x^n,y^1,\dots,y^m)&=0,\\
+    f_2(x^1,\dots,x^n,y^1,\dots,y^m)&=0,\\
+    \cdots&\\
+    f_m(x^1,\dots,x^n,y^1,\dots,y^m)&=0.
+\end{align*}
+
+Definimos neste caso o \textit{Jacobiano} das funções $f_1,\dots,f_m$ com relação as variáveis $y^1,\dots,y^m$
+como a matriz $J(x^1,\dots,x^n,y^1,\dots,y^m)$ cujas entradas são dadas por
+$$J=\left(f_{i,y^j}\right).$$
+Assim, vale o seguinte 
+\begin{theorem}[Função implícita]
+    Dado $(x_0,y_0)=(x^1_0,\dots,x^n_0,y^1_0,\dots,y^m_0)$ tal que $f_1(x_0,y_0)=\cdots=f_m(x_0,y_0)=0$,
+    se todas as componentes de $J$ são contínuas numa vizinhança de $(x_0,y_0)$ e $\det J(x_0,y_0)\neq0$,
+    então existem funções únicas $\varphi^1(x),\dots,\varphi^m(x)$ tal que $\varphi^1(x_0)=y^1_0,\dots,
+    \varphi^m(x_0)=y^m_0$ e $f_1(x,\varphi(x))=\cdots=f_m(x,\varphi(x))=0$ numa vizinhança de $x_0$.
+\end{theorem}
+
+Note que a separação entre as variáveis independentes $x$ e as dependentes $y$ é arbitrária, e separações
+diferentes levam a construções de funções diferentes, e que somente algumas podem satisfazer as hipóteses
+do teorema ao que se refere o Jacobiano enquanto outras não.
+
+Como rascunho de demonstração, considere que as variações dos $y^k$ devem ser tais que, junto das variações
+dos $x^j$, cancelam qualquer tipo de variação nos $f_i$:
+\begin{align*}
+    df_1&=\quad f_{1,x^1}dx^1+\cdots+f_{1,x^n}dx^n+f_{1,y^1}dy^1+\cdots+f_{1,y^m}dy^m=0\\
+    df_2&=\quad f_{2,x^1}dx^1+\cdots+f_{2,x^n}dx^n+f_{2,y^1}dy^1+\cdots+f_{2,y^m}dy^m=0\\
+    &\quad\cdots\\
+    df_m&=\quad f_{m,x^1}dx^1+\cdots+f_{m,x^n}dx^n+f_{m,y^1}dy^1+\cdots+f_{m,y^m}dy^m=0
+\end{align*}
+Temos portanto o seguinte sistema linear de $m$ equações:
+\begin{align*}
+    J_{11}dy^1+\cdots+J_{1m}dy^m&=-f_{1,x^1}dx^1-\cdots-f_{1,x^n}dx^n\\
+    J_{21}dy^1+\cdots+J_{2m}dy^m&=-f_{2,x^1}dx^1-\cdots-f_{2,x^n}dx^n\\
+    \cdots&\\
+    J_{m1}dy^1+\cdots+J_{mm}dy^m&=-f_{m,x^1}dx^1-\cdots-f_{m,x^n}dx^n
+\end{align*}
+que, dado a condição $\det J\neq0$ tem solução dada pela matriz inversa:
+\begin{align*}
+    dy^1&=-(J^{-1})^{11}\left(f_{1,x^1}dx^1+\cdots+f_{1,x^n}dx^n\right)-
+    \cdots-(J^{-1})^{1m}\left(f_{m,x^1}dx^1+\cdots+f_{m,x^n}dx^n\right)\\
+    dy^2&=-(J^{-1})^{21}\left(f_{1,x^1}dx^1+\cdots+f_{1,x^n}dx^n\right)-
+    \cdots-(J^{-1})^{2m}\left(f_{m,x^1}dx^1+\cdots+f_{m,x^n}dx^n\right)\\
+    \cdots&\\
+    dy^m&=-(J^{-1})^{m1}\left(f_{1,x^1}dx^1+\cdots+f_{1,x^n}dx^n\right)-
+    \cdots-(J^{-1})^{mm}\left(f_{m,x^1}dx^1+\cdots+f_{m,x^n}dx^n\right)\\
+\end{align*}
+Podemos então coletar os termos de $dx^j$ em cada uma destas equações e escrever um sistema de $mn$ equações 
+diferenciais
+$$dy^i=\varphi^i_{,1}dx^1+\cdots+\varphi^i_{,n}dx^n
+\Rightarrow\varphi^i_{,j}=-(J^{-1})^{i1}f_{1,x^j}-\cdots-(J^{-1})^{im}f_{m,x^j}.$$
+Esse sistema de equações possui solução única dada a condição inicial $\varphi(x_0)=y_0$, e vale na
+vizinhança de $x_0$ onde $\det J\neq0$.
+
+Com esse maquinário podemos então definir as seguintes grandezas para todo $y^i$ e todo $x^j$:
+$$\pd{y^i}{x^j}{x^1,\dots,x^{j-1},x^{j+1},\dots,x^n}\equiv\phi^i_{,j},$$
+que é lido como a \textit{derivada parcial de $y^i$ com relação a $x^j$ a $x^1,\dots,x^{j-1},x^{j+1}
+,\dots,x^n$ constantes}. As variáveis constantes precisam ser explicitadas para determinar
+qual foi a construção realizada com o teorema da função implícita, mas pode ser omitida em casos
+em que a decomposição utilizada fica clara do contexto. No caso $n=1$ denotamos essa grandeza simplesmente 
+com a notação de Leibniz usual, $\frac{dy^i}{dx}$. Isso nos permite escrever a variação de cada $y^i$ como
+$$dy^i=\pd{y^i}{x^1}{x^2,\dots,x^n}dx^1+\pd{y^i}{x^2}{x^1,x^3,\dots,x^n}dx^2+\cdots+\pd{y^i}{x^n}{x^1,\dots,x^{n-1}}dx^n.$$
+Derivadas de maior ordem podem também ser construidas com seu encadeamento, desde que a decomposição utilizada
+no teorema da função implícita seja a mesma para todas elas, e tem a mesma propriedade de simetria de permutação 
+da derivada parcial usual. No caso em que as variáveis dependentes já são funções explícitas das variáveis
+dependentes, a solução do teorema da função implícita são as funções em questão, e as derivadas parciais
+a variáveis constantes são apenas as derivadas parciais das funções originais.
+
+Por fim, uma trajetória $\gamma(t)$ nas variáveis independendes extende-se naturalmente para as variáveis
+dependentes atrvés da função $\varphi$ como $(\gamma(t), \varphi\circ\gamma(t))$.
+
+\subsection{Transformação de Legendre}
+
+Suponha que estamos estudando a variável $y$ na relação $f(q,x,y)=0$ e estamos particularmente interessados
+no valor da derivada 
+$$p=\pd{y}{q}{x}$$
+em vez do valor de $q$. Inspirando-se na seguinte manipulação:
+$$dy=pdq+\pd{y}{x}{q}dx\Rightarrow
+d(y-pq)=-qdp+\pd{y}{x}{q}dx,$$
+que sugere que a variável $z=y-pq$ é uma função implícita de $p$ sem ser função implícita de $q$, vamos
+utilizar o teorema da função implícita no sistema de equações
+\begin{align*}
+    f(q,x,z+pq)&=0\\
+    f_{,y}(q,x,z+pq)p+f_{,q}(q,x,z+pq)&=0
+\end{align*}
+deixando $z$ e $q$ como função de $p$ e $x$. A conclusão que chegaremos é de que
+$$dz=-qdp+\pd{y}{x}{q}dx,$$
+ou seja que de fato
+$$\pd{z}{p}{x}=-q,\quad\pd{z}{x}{p}=\pd{y}{x}{q}$$
+e a condição no Jacobiano para que isso seja possível além da que já é tomada como pressuposto quando
+tornamos $y$ função implícita torna-se simplesmente
+$$\pd{p}{q}{x}\neq0.$$
+
+A variável $z$ recebe o nome de \textit{transformação de Legendre} de $y$ em relação a $q$. A 
+construção acima pode ser facilmente extendida para uma relação de várias variáveis 
+$f(q^1,\dots,q^m,x^1,\dots,x^n,y)=0$, com
+$$z=y-p_1q^1-\cdots-p_mq^m,$$
+e para todos $i$ vale que
+$$\pd{z}{p_i}{p_1,\dots,p_{i-1},p_{i+1},\dots,p_m,x^1,\dots,x^n}=-q^i,$$
+$$\pd{z}{x^i}{p_1,\dots,p_m,x^1,\dots,x^{i-1},x^{i+1},\dots,x^n}=
+\pd{y}{x^i}{q^1,\dots,q^m,x^1,\dots,x^{i-1},x^{i+1},\dots,x^n},$$
+sob a condição no Jacobiano de $p$ em relação a $q$
+$$\det\left(\pd{p_i}{q^j}{q^1,\dots,q^{j-1},q^{j+1},\dots,q^m,x^1,\dots,x^n}\right)\neq0$$
+A construção também claramente vale quando $n=0$ e todas as variáveis independentes de uma relação sofrem
+a transformação ao mesmo tempo. Além disso, tudo aqui vale trivialmente quando a variável dependente
+em questão é uma função explícita das variáveis dependentes.
+
+\subsection{Problemas}
+
+\begin{enumerate}
+    \item Considere a função $f(x,y) = 3x^2y-2x$ e a trajetória $\gamma(t)=(\cos t,\sin t)$.
+    \begin{enumerate}
+        \item Usando a definição de derivada direcional, encontre a derivada de $f$ em $\gamma(0)$
+        ao longo de $\gamma'(0)$
+        \answer{$(f\circ\gamma)'(0)=3$}
+        \item Utilize a decomposição em derivadas parciais e a velocidade da trajetória para obter o mesmo
+        resultado
+        \answer{$f_{,x}=6xy-2,f_{,y}=3x^2,\gamma'(t)=(-\sin t,\cos t)$}
+    \end{enumerate}
+
+    \item Encontre todas as derivadas parciais das seguintes funções:
+    \begin{enumerate}
+        \item $f(x,y,z)=4x^3y^2-e^zy^4+\frac{z^3}{x^2}_4y-x^{16}$
+        \answer{$f_{,x}=12x^2y^2-\frac{2z^3}{x^3}-16x^{15},f_{,y}=8x^3y-4e^zy^3+4,f_{,z}=-e^zy^4+\frac{3z^2}{x^2}$}
+        \item $g(s,t,u)=t^2\log(s+2t)-\log(3u)(s^3+t^2-4u)$
+        \answer{$g_{,s}=\frac{t^2}{s+2t}-3s^2\log(3u),
+        g_{,t}=2t\log(s+2t)+\frac{2t^2}{s+2t}-2t\log(3u),g_{,u}=4\log(3u)-\frac{s^3+t^2-4u}{u}$}
+    \end{enumerate}
+
+    \item Dado o sistema de equações
+    \begin{align*}
+        x^2y+3y+z^3-z&=8\\
+        2x+2y+\cos xz&=7
+    \end{align*}
+    que possui solução $(x,y,z)=(1,2,0)$, encontre um par de variáveis que podem ser escritas
+    como função da outra em torno deste ponto e escreva as equações diferenciais associadas.
+    Calcule o valor das derivadas no ponto dado.
+    \answer{$\frac{dy}{dx}=-\frac{2x^2y\sin xz+(2-z\sin xz)(3z^2-1)}{(x^2+3)x\sin xz+2(3z^2-1)}=-1,
+    \frac{dz}{dx}=-\frac{4xy-(x^2+3)(2-z\sin xz)}{(x^2+3)x\sin xz+2(3z^2-1)}=0$}
+
+    \item A esfera unitária no $\mathbb R^3$ é definida pela equação $x^2+y^2+z^2=1$.
+    \begin{enumerate}
+        \item Encontre $z$ como função de $x,y$ de forma que a solução inclua o ponto $(0,0,1)$.
+        \answer{$z=\sqrt{1-x^2-y^2}$}
+        \item Utilize o teorema da função implícita em torno de $(0,0,1)$ utilizando $x,y$ como variáveis
+        independentes e $z$ como dependente para escrever um par de equações diferenciais. Mostre que
+        sua resposta do item anterior satisfaz as equações.
+        \answer{$\pd{z}{x}{y}=-\frac{x}{z},\pd{z}{y}{x}=-\frac{y}{z}$}
+    \end{enumerate}
+
+    \item Mostre que para uma relação $f(x,y,z)=0$ vale que
+    \begin{align*}
+        \pd{x}{y}{z}\pd{y}{x}{z}&=1\\
+        \pd{x}{y}{z}\pd{y}{z}{x}\pd{z}{x}{y}&=-1
+    \end{align*}
+
+    \item Mostre que para um par de relações $f(x,y,z,w)=g(x,y,z,w)=0$ vale que
+    \begin{align*}
+        \pd{w}{z}{x}&=\pd{w}{y}{x}\pd{y}{z}{x}\\
+        \pd{w}{x}{z}&=\pd{w}{x}{y}+\pd{w}{y}{x}\pd{y}{x}{z}
+    \end{align*}
+
+    \item Encontre a transformada de Legendre das seguintes funções
+    \begin{enumerate}
+        \item $f(t)=e^t$
+        \answer{$g(s)=s(\log s-1)$}
+        \item $x(q)=q^2$
+        \answer{$y(p)=\frac{1}{4}p^2$}
+    \end{enumerate}
+
+    \item Suponha que uma variável $a$ dependa de $q$ e $x$ com o diferencial
+    $$da=pdq+ydx.$$
+    Mostre que
+    $$\pd{a}{x}{p}=y-p\pd{y}{p}{x}$$
+
+    \item* Ao final do século XVIII foi desenvolvida a mecânica analítica por Giuseppe Lagrangia. 
+    A abordagem consiste em resumir todos os efeitos da mecânica clássica através de uma função
+    $L(q,v,t)$ que caracteriza o sistema em questão, dependendo da posição $q$, velocidade $v$ e 
+    do tempo $t$. As equações de movimento para a trajetória $\gamma_L(t)=(\gamma_L^q(t),\gamma_L^v(t),t)$ 
+    do sistema então são geradas pelo par de equações diferenciais
+    \begin{align*}
+        \gamma_L^q{'}(t)&=\gamma_L^v(t)\\
+        \left(L_{,v}\circ\gamma_L\right)'(t)&=\left(L_{,q}\circ\gamma_L\right)(t)
+    \end{align*}
+    e condição inicial $\gamma_L(0)=(q_0,v_0,0)$. Começando com um exemplo,
+    \begin{enumerate}
+        \item Mostre que se $L(q,v,t)=\frac{1}{2}mv^2-\frac{1}{2}kq^2$ obtemos a equação de movimento
+        para a distensão $q$ de uma massa $m$ presa a uma mola de constante elástica $k$
+    \end{enumerate}
+    Porém o verdadeiro poder da abordagem que estamos considerando é a possibilidade de escrever
+    equações de movimento utilizando sistemas de coordenadas alternativos quando os eixos cartesianos
+    geram equações inelegantes. Suponha que gostariamos de descrever um sistema utilizando uma coordenada 
+    $Q$ que está relacionada à coordenada anterior por uma relação $f(q,Q,t)=0$.
+    \begin{enumerate}
+        \setcounter{enumii}{1}
+        \item Encontre uma relação $g(q,v,Q,V,t)=0$ para uma nova variável $V$ de forma que, utilizando
+        o teorema da função implícita para construir $(q,v)=\varphi(Q,V,t)$, para qualquer trajetória
+        $\Gamma_L(t)=(\Gamma_L^Q(t),\Gamma_L^V(t),t)$
+        $$\Gamma_L^Q{'}(t)=\Gamma_L^V(t)\Rightarrow(\varphi^q\circ\Gamma_L){'}(t)=(\varphi^v\circ\Gamma_L)(t)$$
+        \answer{$g(q,v,Q,V,t)=f_{,q}(q,Q,t)v+f_{,Q}(q,Q,t)V+f_{,t}(q,Q,t)$}
+        \item Definindo
+        $$\hat L(Q,V,t)=L(\varphi(Q,V,t),t)$$
+        Mostre que se $\Gamma_L(t)$ for tal que 
+        \begin{align*}
+            \Gamma_L^Q{'}(t)&=\Gamma_L^V(t)\\
+            \left(\hat L_{,V}\circ\Gamma_L\right)'(t)&=\left(\hat L_{,Q}\circ\Gamma_L\right)(t)
+        \end{align*}
+        sujeito à condição inicial $(\varphi\circ\Gamma_L)(0)=(q_0,v_0)$, então $\gamma_L(t)=(\varphi\circ\Gamma_L,t)$.
+    \end{enumerate}
+
+    Outro ponto de vista da mecânica analítica que tem um sabor parecido com a de Lagrangia é o de 
+    William Hamilton. Aqui vamos caracterizar o sistema por uma função $H(q,p,t)$ da posição
+    $q$, momento $p$ e tempo $t$. As equações de movimento para a trajetória 
+    $\gamma_H(t)=(\gamma_H^q(t),\gamma_H^p(t),t)$
+    agora tornam-se
+    \begin{align*}
+        \gamma_H^q{'}(t)&=(H_{,p}\circ\gamma_H)(t)\\
+        \gamma_H^p{'}(t)&=-(H_{,q}\circ\gamma_H)(t)
+    \end{align*}
+    e condição inicial $\gamma_H(0)=(q_0,p_0,0)$.
+    \begin{enumerate}
+        \setcounter{enumii}{3}
+        \item Mostre que se $H(q,p,t)=\frac{p^2}{2m}+\frac{1}{2}kq^2$ obtemos a equação de movimento
+        para a distensão $q$ de uma massa $m$ presa a uma mola de constante elástica $k$
+    \end{enumerate}
+    Note a grande simetria entre as duas equações quando comparada com as de Lagrangia. Isso nos permite
+    fazer mudanças de coordenadas ainda mais esotéricas. Suponha que construimos um par de relações entre
+    $q,p,Q,P,t$ de forma que
+    $$\pd{Q}{q}{p,t}\pd{P}{p}{q,t}-\pd{Q}{p}{q,t}\pd{P}{q}{p,t}=1.$$
+    Neste caso a transformação de coordenadas é dita \textit{canônica}.
+    \begin{enumerate}
+        \setcounter{enumii}{4}
+        \item Mostre que se uma transformação é canônica,
+        $$\pd{Q}{q}{p,t}=-\pd{p}{P}{Q,t}$$
+        e conclua que existe uma função $F(q,P,t)$ tal que $p=F_{,q}$ e $P=F_{,P}$. Esta é chamada de 
+        \textit{função geratriz} da transformação canônica.
+        \item Usando o teorema da função implícita para construir $(q,p)=\varphi(Q,P,t)$ e definindo
+        $$\hat H(Q,P,t)=H(\varphi(Q,P,t),t)+F_{,t}(\varphi^q(Q,P,t),P,t)$$
+        Mostre que se $\Gamma_H(t)$ for tal que
+        \begin{align*}
+            \Gamma_H^Q{'}(t)&=(\hat H_{,P}\circ\Gamma_H)(t)\\
+            \Gamma_H^P{'}(t)&=-(\hat H_{,Q}\circ\Gamma_H)(t)
+        \end{align*}
+        sujeito à condição inicial $(\varphi\circ\Gamma_H)(0)=(q_0,p_0)$, então $\gamma_H(t)=(\varphi\circ\Gamma_H)(t)$.
+    \end{enumerate}
+    Apesar do formalismo de Hamilton parecer mais poderoso que o de Lagrangia por podermos misturar 
+    posições e momentos, eles são na verdade equivalentes, sendo relacionadas por uma transformação
+    de Legendre entre as variáveis $v$ e $p$,
+    $$H=-(L-pv).$$
+    \begin{enumerate}
+        \setcounter{enumii}{6}
+        \item Caracterize a função geratriz da transformação de coordenadas estudada nos itens (b) e (c)
+        \answer{$F(q,P,t)=P\varphi(q,t),\quad f(q,\varphi(q,t),t)=0$}
+    \end{enumerate}
+\end{enumerate}
+
+\iffalse
+\section{Geometria Diferencial}
+\subsection{Vetores no $\mathbb R^n$}
+
+\subsection{Problemas}
+\begin{enumerate}
+    \item As coordenadas esféricas $r,\theta,\phi$ para o $\mathbb R^3$ são definidas de acordo com
+    as seguintes equações a partir das coordenadas cartesianas $x,y,z$:
+    \begin{align*}
+        x&=r\sin\theta\cos\phi\\
+        y&=r\sin\theta\sin\phi\\
+        z&=r\cos\theta
+    \end{align*}
+    e podem ser visualizadas como na figura abaixo.
+
+    \begin{figure}[ht!]
+        \centering
+        \begin{tikzpicture}
+            \draw[thick,->] (0,0) -- ({-2*tan(30)},-2) node[below]{$x$};
+            \draw[thick,->] (0,0) -- (3,0) node[right]{$y$};
+            \draw[thick,->] (0,0) -- (0,3) node[above]{$z$};
+            \draw[ultra thick, ->] (0,0) -- node[pos=0.5, below right] {$r$} (2,2);
+            \draw[dashed] (0,0) -- (2,{-2/tan(60)}) -- (2,2);
+            \draw (1.8,{-1.8/tan(60)}) -- (1.8,{-1.8/tan(60)+0.2}) -- (2,{-2/tan(60)+0.2});
+            \fill (1.9,{-1.9/tan(60)+0.1}) circle (0.02);
+            \draw[dashed] ({0.5*cos(240)},{0.5*sin(240)}) arc (240:330:0.5) node[pos=0.5,below] {$\phi$};
+            \draw[dashed] ({0.5*cos(45)},{0.5*sin(45)}) arc (45:90:0.5) node[pos=0.5,above] {$\theta$};
+        \end{tikzpicture}
+    \end{figure}
+
+    Note que estas parametrizam o espaço usando $[0,\infty)\times[0,\pi]\times[0,2\pi)$. Encontre, como
+    função de $r,\theta,\phi$
+    \begin{enumerate}
+        \item A base $e_r,e_\theta,e_\phi$ em termos da base $e_x,e_y,e_z$
+        \answer{$e_r=\sin\theta(\cos\phi e_x+\sin\phi e_y)+\cos\theta e_z$
+        \par$e_\theta=r(\cos\theta(\cos\phi e_x+\sin\phi e_y)-\sin\theta e_z)$
+        \par$e_\phi=r\sin\theta(-\sin\phi e_x+\cos\phi e_y)$}
+        \item A métrica para as coordenadas esféricas, supondo a métrica euclideana para as cartesianas.
+        \answer{$g=\left(\begin{matrix}1&0&0\\0&r^2&0\\0&0&r^2\sin^2\theta\end{matrix}\right)$}
+        \item Vemos a partir do item anterior que as coordenadas esféricas formam um sistema ortogonal.
+        Encontre os versores $\hat r,\hat\theta,\hat\phi$ em termos dos versores $\hat x, \hat y,\hat z$.
+        \answer{$\hat r=\sin\theta(\cos\phi\hat x+\sin\phi\hat y)+\cos\theta\hat z$
+        \par$\hat\theta=\cos\theta(\cos\phi\hat x+\sin\phi\hat y)-\sin\theta\hat z$
+        \par$\hat\phi=-\sin\phi\hat x+\cos\phi\hat y$}
+    \end{enumerate}
+\end{enumerate}
+\fi
+
 \section{Respostas dos problemas}
-    \renewcommand{\do}[1]{#1.\\}
+    \renewcommand{\do}[1]{\noindent\par #1}
     \dolistloop{\problemanswers}
 
 \end{document}
