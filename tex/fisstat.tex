@@ -14,13 +14,18 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations.markings}
 \tikzset{
-    mid arrow/.style={postaction={decorate,decoration={
-        markings,
-        mark=at position .5 with {\arrow[#1]{stealth}}
-    }}},
+    mid arrow/.style={
+        postaction={
+            decorate,decoration={
+                markings,
+                mark=at position .5 with {\arrow[#1]{stealth}}
+            }
+        }
+    },
 }
 \usetikzlibrary{intersections}
 \usetikzlibrary{spath3}
+\usetikzlibrary{hobby}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc} 
@@ -33,10 +38,18 @@
 \usepackage{etoolbox}
 \newcommand\problemanswers{}
 \makeatletter
-\newcommand{\answer}[1]{\listxadd{\problemanswers}{\thesection.\theenumi\ifnum\@enumdepth=2\theenumii\fi) \unexpanded{#1}}}
+\newcommand{\answer}[1]{
+    \listxadd{\problemanswers}{
+        \thesection.\theenumi\ifnum\@enumdepth=2\theenumii\fi) \unexpanded{#1}
+    }
+}
 \makeatother
 
-\newcommand{\pd}[3]{\ifblank{#3}{}{\left(}\frac{\partial #1}{\partial #2}\ifblank{#3}{}{\right)_{#3}}}
+\newcommand{\pd}[3]{
+    \ifblank{#3}{}{\left(}
+    \frac{\partial #1}{\partial #2}
+    \ifblank{#3}{}{\right)_{#3}}
+}
 
 \usepackage{ragged2e}
 \usepackage{epigraph}
@@ -62,14 +75,15 @@
 
 \section{Introdução}
 
-\epigraph{\justifying A capacidade de reduzir tudo a leis fundamentais simples não implica 
-na capacidade de partir destas e reconstruir o universo. A hipótese construcionista se 
-desfaz quando confrontada com o par de dificuldades de escala e complexidade. A cada camada 
-de complexidade surgem propriedades totalmente novas. Psicologia não é uma aplicação da 
-biologia, e muito menos a biologia uma aplicação da química. Agora vemos que o todo torna-se 
-não algo além, mas algo completamente diferente da soma de suas partes.}
-{\textit{Philip W. Anderson}, More is Different: Broken Symmetry and the Nature of the 
-Hierarchical Structure of Science (1972)}
+\epigraph{\justifying A capacidade de reduzir tudo a leis fundamentais simples 
+não implica na capacidade de partir destas e reconstruir o universo. A hipótese
+construcionista se desfaz quando confrontada com o par de dificuldades de escala
+e complexidade. A cada camada de complexidade surgem propriedades totalmente 
+novas. Psicologia não é uma aplicação da biologia, e muito menos a biologia uma
+aplicação da química. Agora vemos que o todo torna-se não algo além, mas algo
+completamente diferente da soma de suas partes.}{\textit{Philip W. Anderson}, 
+More is Different: Broken Symmetry and the Nature of the Hierarchical Structure
+of Science (1972)}
 
 \noindent A termodinâmica é área da física que lida com \textit{emergência}, ou seja, propriedades, 
 leis ou fenômenos que ocorrem em escalas macroscópicas - quando o número de constituintes torna-se
@@ -883,7 +897,12 @@ Carnot no diagrama $TS$, composto de duas isotermas e duas adiabáticas:
 A entropia faz o papel análogo a uma coordenada de trabalho conjugada à temperatura termodinâmica. A
 expressão diferencial para a Primeira Lei então fica com um formato simétrico envolvendo a entropia:
 $$dU=TdS+y_1dX_1+\cdots y_ndX_n,$$
-onde o termo $\delta Q=TdS$. Note também a extensividade de $S$.
+onde o termo $\delta Q=TdS$. Note também a extensividade de $S$, que garante que quando escrevemos
+em termos de variáveis extensivas $X$, vale que
+$$S(\lambda X)=\lambda S(X)$$
+para qualquer fator de escala $\lambda$. Extensividade também finalmente nos proporciona a relação de 
+Gibbs-Duhem para qualquer sistema termodinâmico
+$$SdT+X_1dy_1+\cdots X_ndy_n=0.$$
 
 \subsection{Caracterizando o Equilíbrio}
 
@@ -894,9 +913,9 @@ termodinâmico} de um sistema é caracterizado por um \textit{máximo} de entrop
 de energia interna total $U$ e variáveis de estado $a_1,\dots,a_n$ que podem variar, no equilíbrio estas
 tomam o valor tal que a entropia total do sistema $S$ satisfaz
 $$S(U,a'_1,\dots,a'_n)\leq S(U,a_1,\dots,a_n).$$
-Usando o teorema da função implícita munidos do fato de que $C_V$ é positivo, podemos também caracterizar
-o equilíbrio de um sistema que pode receber trabalho de um meio externo sem receber calor através de um
-\textit{mínimo} de energia interna, ou seja
+Com uma simples manipulação que utiliza o fato de que a temperatura termodinâmica deve ser positiva, podemos 
+também caracterizar o equilíbrio de um sistema que pode receber trabalho de um meio externo sem receber calor 
+através de um \textit{mínimo} de energia interna, ou seja
 $$U(S,a'_1,\dots,a'_n)\geq U(S,a_1,\dots,a_n).$$
 
 \subsection{Problemas}
@@ -967,7 +986,7 @@ $$U(S,a'_1,\dots,a'_n)\geq U(S,a_1,\dots,a_n).$$
             \fill[lightgray] (2.4,0.6) 
             plot[samples=15,domain=2.4:0.8] (\x,{0.6*(2.4/\x)^0.7}) -- (0.8,2.7) 
             plot[samples=15,domain=0.8:2.4] (\x,{2.7*(0.8/\x)^0.7}) -- (2.4,0.6);
-            \fill[darkgray] (2.4,0.6) -- (2.4,{2.7*(0.8/2.4)^0.7})
+            \fill[gray] (2.4,0.6) -- (2.4,{2.7*(0.8/2.4)^0.7})
             plot[samples=6,domain=2.4:3.5] (\x,{2.7*(0.8/\x)^0.7}) -- (3.5,0.6) -- (2.4,0.6);
             \draw[ultra thick] (2.4,0.6) 
             plot[samples=15,domain=2.4:0.8] (\x,{0.6*(2.4/\x)^0.7}) node[left] {2}
@@ -1039,7 +1058,7 @@ $$U(S,a'_1,\dots,a'_n)\geq U(S,a_1,\dots,a_n).$$
     \end{enumerate}
 
     \item Mostre que se a pressão de um sistema pode ser escrita $p=Tf(V)$ então a energia interna $U$ depende
-    apenas da temperatura $T$..
+    apenas da temperatura $T$.
     \answer{$\pd{U}{V}{T}=T\pd{p}{T}{V}-p$}
 
     \item O ciclo de Stirling para um gás ideal é definido 
@@ -1118,6 +1137,104 @@ $$U(S,a'_1,\dots,a'_n)\geq U(S,a_1,\dots,a_n).$$
     equilíbrio termodinâmico.
     \answer{$p=p_0+\frac{mg}{A}$}
 \end{enumerate}
+
+\section{Transições de Fase}
+
+\subsection{Potenciais Termodinâmicos}
+
+Da maneira como foram formuladas as leis da termodinâmica, vemos que as variáveis naturais para se
+trabalhar com o assunto são a energia interna, a entropia, e as coordenadas de trabalho do sistema.
+No entanto, em muitos contextos teóricos e experimentais nosso interesse é no que acontece quando
+especificamos alguns parâmetros intensivos ao invés dos extensivos naturais. Especificar a pressão
+de um gás ao invés de seu volume. A tensão num elástico ao invés de sua distensão. A temperatura de 
+um objeto ao invés de sua entropia. 
+
+Fisicamente, há uma maneira muito simples de implementar este tipo de vínculo. Suponha que a primeira
+lei da termodinâmica para um sistema físico pode ser escrita
+$$dU=p_1dQ_1+\cdots+p_ndQ_n+y_1dX_1+\cdots+y_ndX_n,$$
+onde chamamos $p,Q$ variáveis que queremos controlar o lado intensivo, enquanto $y,X$ as que queremos
+controlar o lado extensivo. Ao invés de tratarmos o sistema como isolado, acomplamos o mesmo a algum
+tipo de reservatório que pode absorver as variáveis extensivas conjugadas às intensivas que estamos 
+tentando fixar, sendo este grande o suficiente de forma que possamos aproximar sua energia interna 
+até primeira ordem:
+$$U_\text{res}(Q_1,\dots,Q_m)\approx U^{(0)}+p^{(0)}_1(Q_1-Q^{(0)}_1)+\cdots+p^{(0)}_m(Q_m-Q^{(0)}_m).$$
+
+Realizamos o acoplamento olhando então para a energia total do conjunto,
+$$U_\text{tot}=U(Q_1,\dots,Q_m,X_1,\dots,X_n)+U_\text{res}(Q^{(0)}_1-Q_1,\dots,Q_m)$$
+e deixamos o sistema encontrar seu equilíbrio isolado do resto do universo. Isso é equivalente a encontrar
+os $Q$ que minimizam a expressão
+$$V=U-p^{(0)}_1Q_1+-\cdots-p^{(0)}_mQ_m,$$
+levando-nos a concluir que as variáveis intensivas devem ter o mesmo valor que têm no reservatório.
+$$p_1=p^{(0)}_1,\dots,p_m=p^{(0)}_m.$$
+Podemos resumir essa construção analisando a função $V(p_1,\dots,p_m,X_1,\dots,X_n)$ definida como a
+transformação de Legendre de $U$ nas variáveis de interesse, e recebe o nome de um \textit{potencial
+termodinâmico}. Como nestes casos estamos normalmente
+nos preocupando apenas com a configuração das variáveis $X$, a caracterização do equilíbrio como ponto
+que minimiza $V$ continua sendo válida. Note também que dada a extensividade, se fizermos a transformação
+utilizando todas as variáveis extensivas, a função que sobra é identicamente nula e perdemos qualquer
+informação sobre o que é sistema e o que é reservatório. Precisamos pelo menos de uma grandeza extensiva
+de referência nos nossos potenciais termodinâmicos.
+
+Alguns casos específicos dessa construção recebem nomes. Para qualquer sistema podemos realizar
+a transformação $F=U-TS$, que recebe o nome de \textit{energia livre de Helmholtz}. Quando lidamos
+com gases e outros fluidos que possuem pressão e volume, definimos também a \textit{entalpia} $H=U+pV$
+e a \textit{energia livre de Gibbs} $G=U-TS+pV$. Ainda para um fluido, tomando a segunda derivada
+dessas funções em diferentes ordens nos permite extrair as \textit{relações de Maxwell}:
+\begin{alignat*}{3}
+    &&U_{,SV}&=\pd{T}{V}{S}&&=-\pd{p}{S}{V}\\
+    &&H_{,Sp}&=\pd{T}{p}{S}&&=\pd{V}{S}{p}\\
+    &&-F_{,TV}&=\pd{S}{V}{T}&&=\pd{P}{T}{V}\\
+    &&-G_{,Tp}&=\pd{S}{p}{T}&&=-\pd{V}{T}{p}
+\end{alignat*}
+
+\subsection{Estabilidade}
+
+Vamos considerar um sistema termodinâmico em que escrevemos sua entropia em termos das variáveis extensivas $S(X)$.
+De maneira geral visualizamos essa situação como as variáveis extensivas uniformemente distribuidas ao longo da
+extensão do corpo, porém na realidade essas grandezes flutuam ao longo do tempo, de forma que a princípio podemos 
+observar uma parcela $\Delta$ em proporções diferentes do resto do corpo $X-\Delta$:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{scope}[xshift=-2.5cm]
+            \draw[very thick,fill=lightgray] (0,0) -- (3,0) -- (3,3) -- (0,3) -- cycle;
+            \node at (1.5,1.5) {$X$};
+        \end{scope}
+        \draw[ultra thick,->] (1,1.5) -- (2,1.5);
+        \begin{scope}[xshift=2.5cm]
+            \draw[very thick,fill=lightgray] (0,0) -- (3,0) -- (3,3) -- (0,3) -- cycle;
+            \draw[thick,fill=gray,use Hobby shortcut,closed=true] 
+            (0.7,1.5) .. (1.2,1.8) .. (1.1,2.0) .. (1.3,2.2) .. (0.7,2.3);
+            \node at (0.85,2) {$\Delta$};
+            \node at (2,0.8) {$X-\Delta$};
+        \end{scope}
+    \end{tikzpicture}
+\end{figure}
+Nessa situação a entropia varia de $S(X)$ para $S(\Delta)+S(X-\Delta)$, e portanto será proibida pela Segunda Lei quando
+isso corresponder a uma diminuição de entropia. Ou seja, concluimos que os pontos de equilíbrio possíveis para nosso
+sistema são apenas aqueles $X$ onde
+$$S(X)\geq S(X-\Delta)+S(\Delta),$$
+para toda variação $\Delta$, ou seja, a entropia é uma função \textit{côncava} das variáveis de estado extensivas. 
+Do contrário, observariamos rapidamente fenômenos de \textit{nucleação} como descritos acima. O caso de igualdade 
+precisa ser incluido devido a extensividade, e só é encontrado no caso em que $\Delta\sim X$.
+
+Supondo agora apenas que a temperatura termodinâmica do nosso sistema é positiva, uma simples manipulação
+análoga à que foi feita na condição de equiilíbrio nos leva também a concluir a \textit{convexidade} 
+da energia interna do sistema em termos das variáveis extensivas:
+$$U(X)\leq U(X-\Delta)+U(\Delta).$$
+Lembrando da expressão da primeira lei para processos contínuos, podemos também escrever uma relação
+entre os diferenciais das variáveis de estado que precisa ser satisfeita para todo processo possível em qualquer
+estado de equilíbrio estável:
+$$dTdS+dy_1dX_1+\cdots+dy_ndX_n\geq0,$$
+onde a igualdade segue da relação de Gibbs-Duhem em uma transformação de escala dada por $(dS,dX)\sim(S,X)$.
+
+Para outros potenciais termodinâmicos, novamente nos interessamos apenas na variação das variáveis extensivas
+que sobraram, e é fácil de ver que a convexidade nestas é mantida pela transformação de Legendre.
+
+\subsection{Fases da Matéria}
+
+\subsection{Problemas}
 
 \appendix
 
