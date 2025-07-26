@@ -1,0 +1,119 @@
+\section{Transições de Fase}
+
+\subsection{Potenciais Termodinâmicos}
+
+Da maneira como foram formuladas as leis da termodinâmica, vemos que as
+variáveis naturais para se trabalhar com o assunto são a energia interna, a
+entropia, e as coordenadas de trabalho do sistema. No entanto, em muitos
+contextos teóricos e experimentais nosso interesse é no que acontece quando
+especificamos alguns parâmetros intensivos ao invés dos extensivos naturais.
+Especificar a pressão de um gás ao invés de seu volume. A tensão num elástico ao
+invés de sua distensão. A temperatura de um objeto ao invés de sua entropia. 
+
+Fisicamente, há uma maneira muito simples de implementar este tipo de vínculo.
+Suponha que a primeira lei da termodinâmica para um sistema físico pode ser
+escrita
+$$dU=p_1dQ_1+\cdots+p_ndQ_n+y_1dX_1+\cdots+y_ndX_n,$$
+onde chamamos $p,Q$ variáveis que queremos controlar o lado intensivo, enquanto
+$y,X$ as que queremos controlar o lado extensivo. Ao invés de tratarmos o
+sistema como isolado, acomplamos o mesmo a algum tipo de reservatório que pode
+absorver as variáveis extensivas conjugadas às intensivas que estamos tentando
+fixar, sendo este grande o suficiente de forma que possamos aproximar sua
+energia interna até primeira ordem:
+$$U_\text{res}(Q_1,\dots,Q_m)
+\approx U^{(0)}+p^{(0)}_1(Q_1-Q^{(0)}_1)+\cdots+p^{(0)}_m(Q_m-Q^{(0)}_m).$$
+
+Realizamos o acoplamento olhando então para a energia total do conjunto,
+$$U_\text{tot}=U(Q_1,\dots,Q_m,X_1,\dots,X_n)
++U_\text{res}(Q^{(0)}_1-Q_1,\dots,Q_m)$$
+e deixamos o sistema encontrar seu equilíbrio isolado do resto do universo. Isso
+é equivalente a encontrar os $Q$ que minimizam a expressão
+$$V=U-p^{(0)}_1Q_1+-\cdots-p^{(0)}_mQ_m,$$
+levando-nos a concluir que as variáveis intensivas devem ter o mesmo valor que
+têm no reservatório.
+$$p_1=p^{(0)}_1,\dots,p_m=p^{(0)}_m.$$
+Podemos resumir essa construção analisando a função $V(p_1,\dots,p_m,X_1,\dots,
+X_n)$ definida como a transformação de Legendre de $U$ nas variáveis de
+interesse, e recebe o nome de um \emph{potencial termodinâmico}. Como nestes
+casos estamos normalmente nos preocupando apenas com a configuração das
+variáveis $X$, a caracterização do equilíbrio como ponto que minimiza $V$
+continua sendo válida. Note também que dada a extensividade, se fizermos a
+transformação utilizando todas as variáveis extensivas, a função que sobra é
+identicamente nula e perdemos qualquer informação sobre o que é sistema e o que
+é reservatório. Precisamos pelo menos de uma grandeza extensiva de referência
+nos nossos potenciais termodinâmicos. Alguns casos específicos dessa construção
+recebem nomes. Para qualquer sistema podemos realizar a transformação $F=U-TS$,
+que recebe o nome de \emph{energia livre de Helmholtz}. Quando lidamos com gases
+e outros fluidos que possuem pressão e volume, definimos também a \emph{
+entalpia} $H=U+pV$ e a \emph{energia livre de Gibbs} $G=U-TS+pV$. Ainda para um
+fluido, tomando a segunda derivada dessas funções em diferentes ordens
+nos permite extrair as \emph{relações de Maxwell}:
+\begin{alignat*}{3}
+    &&U_{,SV}&=\pd{T}{V}{S}&&=-\pd{p}{S}{V}\\
+    &&H_{,Sp}&=\pd{T}{p}{S}&&=\pd{V}{S}{p}\\
+    &&-F_{,TV}&=\pd{S}{V}{T}&&=\pd{P}{T}{V}\\
+    &&-G_{,Tp}&=\pd{S}{p}{T}&&=-\pd{V}{T}{p}
+\end{alignat*}
+
+\subsection{Estabilidade}
+
+Vamos considerar um sistema termodinâmico em que escrevemos sua entropia em
+termos das variáveis extensivas $S(X)$. De maneira geral visualizamos essa
+situação como as variáveis extensivas uniformemente distribuidas ao longo da
+extensão do corpo, porém na realidade essas grandezes flutuam ao longo do tempo,
+de forma que a princípio podemos observar uma parcela $\Delta$ em proporções
+diferentes do resto do corpo $X-\Delta$:
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{scope}[xshift=-2.5cm]
+            \draw[very thick,fill=lightgray]
+                (0,0) -- (3,0) -- (3,3) -- (0,3) -- cycle;
+            \node
+                at (1.5,1.5) {$X$};
+        \end{scope}
+        \draw[ultra thick,->]
+            (1,1.5) -- (2,1.5);
+        \begin{scope}[xshift=2.5cm]
+            \draw[very thick,fill=lightgray]
+                (0,0) -- (3,0) -- (3,3) -- (0,3) -- cycle;
+            \draw[thick,fill=gray,use Hobby shortcut,closed=true] 
+                (0.7,1.5) .. (1.2,1.8) .. (1.1,2.0) .. (1.3,2.2) .. (0.7,2.3);
+            \node
+                at (0.85,2) {$\Delta$};
+            \node
+                at (2,0.8) {$X-\Delta$};
+        \end{scope}
+    \end{tikzpicture}
+\end{figure}
+Nessa situação a entropia varia de $S(X)$ para $S(\Delta)+S(X-\Delta)$, e
+portanto será proibida pela Segunda Lei quando isso corresponder a uma
+diminuição de entropia. Ou seja, concluimos que os pontos de equilíbrio
+possíveis para nosso sistema são apenas aqueles $X$ onde
+$$S(X)\geq S(X-\Delta)+S(\Delta),$$
+para toda variação $\Delta$, e a entropia é uma função \emph{côncava} das
+variáveis de estado extensivas. Do contrário, observariamos rapidamente
+fenômenos de \emph{nucleação} como descritos acima. O caso de igualdade precisa
+ser incluido devido a extensividade, e só é encontrado no caso em que $\Delta
+\sim X$.
+
+Supondo agora apenas que a temperatura termodinâmica do nosso sistema é
+positiva, uma simples manipulação análoga à que foi feita na condição de
+equiilíbrio nos leva também a concluir a \emph{convexidade} da energia interna
+do sistema em termos das variáveis extensivas:
+$$U(X)\leq U(X-\Delta)+U(\Delta).$$
+Lembrando da expressão da primeira lei para processos contínuos, podemos também
+escrever uma relação entre os diferenciais das variáveis de estado que precisa
+ser satisfeita para todo processo possível em qualquer estado de equilíbrio
+estável:
+$$dTdS+dy_1dX_1+\cdots+dy_ndX_n\geq0,$$
+onde a igualdade segue da relação de Gibbs-Duhem em uma transformação de escala
+dada por $(dS,dX)\sim(S,X)$.
+
+Para outros potenciais termodinâmicos, novamente nos interessamos apenas na
+variação das variáveis extensivas que sobraram, e é fácil de ver que a
+convexidade nestas é preservada pela transformação de Legendre.
+
+\subsection{Fases da Matéria}
+
+\subsection{Problemas}

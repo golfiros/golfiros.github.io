@@ -1,0 +1,93 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[colorlinks=false,linktocpage=true]{hyperref}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyheadoffset{0.5cm}
+\setlength{\headheight}{20pt}
+
+\usepackage[margin=2cm]{geometry}
+\usepackage{float}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings}
+\tikzset{
+    mid arrow/.style={
+        postaction={
+            decorate,decoration={
+                markings,
+                mark=at position .5 with {\arrow[#1]{stealth}}
+            }
+        }
+    },
+}
+\usetikzlibrary{intersections}
+\usetikzlibrary{spath3}
+\usetikzlibrary{hobby}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[brazilian]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage{etoolbox}
+\newcommand\problemanswers{}
+\makeatletter
+\newcommand{\answer}[1]{
+    \listxadd{\problemanswers}{
+        \thesection.\theenumi\ifnum\@enumdepth=2\theenumii\fi) \unexpanded{#1}
+    }
+}
+\makeatother
+
+\newcommand{\pd}[3]{
+    \ifblank{#3}{}{\left(}
+    \frac{\partial #1}{\partial #2}
+    \ifblank{#3}{}{\right)_{#3}}
+}
+
+\usepackage{ragged2e}
+\usepackage{epigraph}
+\setlength\epigraphwidth{.8\textwidth}
+\usepackage{csquotes}
+
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}{Lema}
+\theoremstyle{definition}
+\newtheorem*{definition}{Definição}
+\theoremstyle{definition}
+\newtheorem{law}{Lei}
+\setcounter{law}{-1}
+
+\title{Física Estatística}
+\author{Gabriel Golfetti}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\input{section01.tex}
+\input{section02.tex}
+\input{section03.tex}
+\input{section04.tex}
+
+\appendix
+
+\input{appendix01.tex}
+%\input{appendix02.tex}
+
+\section{Respostas dos problemas}
+
+\renewcommand{\do}[1]{\noindent\par #1}
+\dolistloop{\problemanswers}
+
+\end{document}

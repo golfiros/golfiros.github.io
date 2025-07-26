@@ -2,21 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url='/latexcgi.html?p=fisstat'" />
   </head>
-  <body onload=latexcgi("/tex/fisstat.tex")>
-    <form id="tex_cc" method="post" action="https://texlive.net/cgi-bin/latexcgi" enctype="multipart/form-data" hidden>
-      <textarea id="tex_src" type="text" name="filecontents[]"></textarea>
-      <input type="text" name="filename[]" value="document.tex"/>
-      <input type="text" name="return" value="pdf"/>
-      <input type="text" name="engine" value="xelatex"/>
-    </form>
-    redirecting to texlive.net
-  </body>
-  <script type=module>
-    window.latexcgi = async (uri) => {
-      const content = await fetch(uri);
-      document.getElementById("tex_src").textContent = await content.text();
-      document.getElementById("tex_cc").submit();
-    }
-  </script>
+  <body/>
 </html>
