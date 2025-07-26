@@ -14,36 +14,31 @@
         .then((c) => c.text())
         .then(JSON.parse);
 
-      const cc = document.createElement("form");
-      document.body.appendChild(cc);
+      const cc = document.body.appendChild(document.createElement("form"));
       cc.hidden = true;
       cc.method = "post";
       cc.action = "https://texlive.net/cgi-bin/latexcgi"
       cc.enctype = "multipart/form-data"
 
       for (const src of manifest.sources) {
-        const content = document.createElement("textarea");
-        cc.appendChild(content);
+        const content = cc.appendChild(document.createElement("textarea"));
         content.name = "filecontents[]";
         content.textContent = await
           fetch(`${path}/${src}`)
           .then((c) => c.text());
 
-        const name = document.createElement("input");
-        cc.appendChild(name);
+        const name = cc.appendChild(document.createElement("input"));
         name.type = "text";
         name.name = "filename[]";
         name.value = src;
       };
 
-      const eng = document.createElement("input");
-      cc.appendChild(eng);
+      const eng = cc.appendChild(document.createElement("input"));
       eng.type = "text";
       eng.name = "engine";
       eng.value = "xelatex";
 
-      const ret = document.createElement("input");
-      cc.appendChild(ret);
+      const ret = cc.appendChild(document.createElement("input"));
       ret.type = "text";
       ret.name = "return";
       ret.value = "pdf";
