@@ -28,7 +28,7 @@ $$U_\text{tot}=U(Q_1,\dots,Q_m,X_1,\dots,X_n)
 +U_\text{res}(Q^{(0)}_1-Q_1,\dots,Q_m)$$
 e deixamos o sistema encontrar seu equilíbrio isolado do resto do universo. Isso
 é equivalente a encontrar os $Q$ que minimizam a expressão
-$$V=U-p^{(0)}_1Q_1+-\cdots-p^{(0)}_mQ_m,$$
+$$V=U-p^{(0)}_1Q_1-\cdots-p^{(0)}_mQ_m,$$
 levando-nos a concluir que as variáveis intensivas devem ter o mesmo valor que
 têm no reservatório.
 $$p_1=p^{(0)}_1,\dots,p_m=p^{(0)}_m.$$
@@ -41,13 +41,15 @@ continua sendo válida. Note também que dada a extensividade, se fizermos a
 transformação utilizando todas as variáveis extensivas, a função que sobra é
 identicamente nula e perdemos qualquer informação sobre o que é sistema e o que
 é reservatório. Precisamos pelo menos de uma grandeza extensiva de referência
-nos nossos potenciais termodinâmicos. Alguns casos específicos dessa construção
-recebem nomes. Para qualquer sistema podemos realizar a transformação $F=U-TS$,
-que recebe o nome de \emph{energia livre de Helmholtz}. Quando lidamos com gases
-e outros fluidos que possuem pressão e volume, definimos também a \emph{
-entalpia} $H=U+pV$ e a \emph{energia livre de Gibbs} $G=U-TS+pV$. Ainda para um
-fluido, tomando a segunda derivada dessas funções em diferentes ordens
-nos permite extrair as \emph{relações de Maxwell}:
+nos nossos potenciais termodinâmicos. 
+
+Alguns casos específicos dessa construção recebem nomes. Para qualquer sistema
+podemos realizar a transformação $F=U-TS$, que recebe o nome de \emph{energia
+livre de Helmholtz}. Quando lidamos com gases e outros fluidos que possuem
+pressão e volume, definimos também a \emph{entalpia} $H=U+pV$ e a \emph{energia
+livre de Gibbs} $G=U-TS+pV$. Ainda para um fluido, tomando a segunda derivada
+dessas funções em diferentes ordens nos permite extrair as \emph{relações de
+Maxwell}:
 \begin{alignat*}{3}
     &&U_{,SV}&=\pd{T}{V}{S}&&=-\pd{p}{S}{V}\\
     &&H_{,Sp}&=\pd{T}{p}{S}&&=\pd{V}{S}{p}\\
@@ -116,28 +118,366 @@ convexidade nestas é preservada pela transformação de Legendre.
 
 \subsection{Fases da Matéria}
 
+Suponha que certo sistema possui entropia
+$$S(X_1,\dots,X_n,N),$$
+onde denotamos uma variável extensiva $N$ específica que vamos utilizar para
+controlar o seu tamanho. Podemos definir então a \emph{entropia específica} 
+$$s(x_1,\dots,x_n)=\frac{S(Nx_1,\dots,Nx_n,N)}{N},$$
+que por extensividade está bem definida independente do valor de $N$ que
+escolhermos, e as variáveis intensivas $x_1,\dots,x_n$ são chamadas \emph{
+específicas}. Neste caso, ganhamos um novo sentido para a questão da
+estabilidade. Um estado $(Nx,N)$ será estável se, e somente se para quaisquer
+pares de pontos $x^{(0)},x^{(1)}$ tais que existe $0<t<1$ de forma que $x=(1-t)
+x^{(0)}+ tx^{(1)}$, vale que
+$$s(x)>(1-t)s(x^{(0)})+ts(x^{(1)}).$$
+Caso contrário, o sistema se decompõe em duas \emph{fases} de estados $((1-t)
+x^{(0)},(1-t)N)$ e $(tx^{(1)},tN)$. Geometricamente, vemos que um estado $x$ é
+estável quando o gráfico de $s$ fica abaixo do plano tangente ao mesmo em $x$.
+No gráfico abaixo vemos um exemplo de região instável no caso de uma única
+variável $x$.
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \draw[very thick,->] 
+            (0,0) -- (8,0) node[right] {$x$};
+        \draw[very thick,->]
+            (0,0) -- (0,3) node[left] {$s$};
+            \begin{luacode}
+                function f(x, m)
+                    t = math.pi * (x - 2.5) / (5.5 - 2.5)
+                    return 
+                        -1.2 * math.log(x) 
+                        + 0.5 * math.sin(t)^2
+                        + m * x
+                end
+
+                function d(m)
+                    local x0 = minimize(f, {2.5, 3.5}, m)
+                    local x1 = minimize(f, {4.5, 5.5}, m)
+                    return f(x1, m) - f(x0, m)
+                end
+
+                m = solve(d, {0.0, 0.5})
+                x0 = minimize(f, {2.5, 3.5}, m)
+                x1 = minimize(f, {4.5, 5.5}, m)
+
+                tex.print(
+                    "\\draw[fill=lightgray,thick,dashed]",
+                    "(", x0, ",0) -- (", x0,",", -f(x0, 0), ")", 
+                    "-- (", x1, ",", -f(x1, 0), ") -- (", x1, ",0);"
+                )
+            \end{luacode}
+        \draw[ultra thick]
+            plot[domain=1:2.5,samples=10]
+                (\x,{1.2*ln(\x)})
+            plot[domain=2.5:5.5,samples=20]
+                (\x,{1.2*ln(\x)-0.5*pow(sin((\x-2.5)*180/(5.5-2.5)),2)})
+            plot[domain=5.5:7,samples=5]
+                (\x,{1.2*ln(\x)});
+    \end{tikzpicture}
+\end{figure}
+Qualquer estado preparado com $x$ na região instável gera uma coexistência de
+fases na sua fronteira, e como a construção vem de retas tangentes vemos que
+todas as fases da matéria que coexistem devem compartilhar o valor de todos os
+coeficientes de trabalho - estão em equilíbrio termodinâmico umas com as outras.
+Assim, quando analisamos transições de fase é natural utilizar um potencial
+termodinâmico que deixa esses coeficientes intensivos em primeiro plano. 
+Escrevendo a Primeira Lei como
+$$dU=y_1dX_1+\cdots y_ndX_n+\mu dN,$$
+olhamos para o potencial $V=U-y_1X_1-\cdots y_nX_n$, genericamente chamado de
+energia livre, que por extensividade é simplesmente dado por
+$$V=\mu N.$$
+Assim, identificamos pontos nessa fronteira encontrando processos contínuos $i
+\rightarrow f$ tais que $y_1^{(i)}=y_1^{(f)},\dots,y_n^{(i)}=y_n^{(f)}$ e
+$$\mu^{(i)}=\mu^{(f)}\Rightarrow\Delta V=-\int_i^fX_1dy_1+\cdots+X_ndy_n=0.$$
+Apesar de que os valores dos coeficientes de trabalho devem ser o mesmo de ambos
+os lados do processo, podemos ter mudanças nas propriedades das coordenadas de
+trabalho. Mais precisamente, observamos possíveis diferenças nos valores ou nas
+derivadas destes. A \emph{ordem} de uma transição de fase é o nome que damos
+para a menor ordem de derivada da energia livre que é diferente antes e depois
+da transição. Uma simples contagem de equações e variáveis livres também nos
+mostra que o espaço dos coeficientes de trabalho onde $k$ fases podem coexistir
+é $(n+1-k)$--dimensional.
+
+\subsection{O Gás de van der Waals}
+
+No caso de um fluido simples que possui energia interna, volume e número de
+moléculas, o parâmetro $N$ utilizado normalmente é o número de moléculas e o
+coeficiente $\mu$ recebe o nome de \emph{potencial químico}, e o potencial
+termodinâmico de interesse é a energia livre de Gibbs. Considere portanto o gás
+ideal
+$$S=\frac{NR}{\gamma-1}\log\frac{UV^{\gamma-1}}{\Phi N^\gamma}.$$
+Podemos incrementar o modelo para melhor representar gases reais através das
+modificações
+\begin{align*}
+    U&\mapsto U+a\frac{N^2}{V}\\
+    V&\mapsto V-Nb
+\end{align*}
+que correspondem respectivamente a uma força atrativa que tende a manter a
+coesão do fluido, e a um limite intrínseco a quanto podemos comprimí-lo. 
+As equações de estado correspondentes à lei dos gases ideais então imediatamente
+tornam-se
+$$U=\frac{NRT}{\gamma-1}-a\frac{N^2}{V},$$
+$$\left(p+a\frac{N^2}{V^2}\right)\left(\frac{V}{N}-b\right)=RT.$$
+Mas ao fazermos o gráfico de algumas das isotermas imediatamente nos deparamos
+com um problema:
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \draw[very thick,->]
+            (0,0) -- (4,0) node[below] {$V$};
+        \draw[very thick,->]
+            (0,0) -- (0,3) node[left] {$p$};
+        \begin{luacode}
+            t = {0.86, 1.00, 1.1}
+            f = {"black", "darkgray", "gray"}
+
+            function p(v, t, c)
+                return 1.5 * (8 * t / (3 * v - 1) - 3 / (v * v)) - c
+            end
+            
+            for i = 1, 3 do
+                tex.print(
+                    "\\draw[ultra thick,samples=20,", f[i], "]",
+                    "plot[domain=", solve(p, {0.4, 1}, t[i], 2.8), ":1]",
+                    "(\\x,{1.5*(8*", t[i], "/(3*\\x-1)-3/(\\x*\\x))})",
+                    "plot[domain=1:3.5]",
+                    "(\\x,{1.5*(8*", t[i], "/(3*\\x-1)-3/(\\x*\\x))});"
+                )
+            end
+        \end{luacode}
+    \end{tikzpicture}
+\end{figure}
+\noindent Em uma delas temos uma região onde a pressão aumenta com o volume à
+temperatura constante, uma clara violação das condições de estabilidade.
+
+Ao invés de descartar o modelo, vamos tentar caracterizar a transição de fase
+que está implícita nas regiões instáveis. Primeiro vemos que o comportamento só
+aparece em isotermas de temperatura
+$$T<T_c=\frac{8a}{27Rb},$$
+chamada temperatura \emph{crítica} do modelo, que é a isoterma específica
+apresentando um ponto de inflexão horizontal em
+$$V=Nv_c=3Nb,\quad p=p_c=\frac{a}{27b^2}.$$
+Podemos então colocar a equação de estado em termos do que chamamos de variáveis
+\emph{reduzidas} para o gás de van der Waals,
+$$T_r=T/T_c,\quad v_r=V/Nv_c,\quad p_r=p/p_c,$$
+$$p_r=\frac{8T_r}{3v_r-1}-\frac{3}{v_r^2}.$$
+A variação da energia livre de Gibbs ao longo de uma isoterma pode então ser
+escrita
+$$dG=Vdp\sim v_rdp_r,$$
+e impondo que esta seja zero entre ambas as fronteiras de dada isoterma obtemos
+a \emph{construção de Maxwell} para o gás de van der Waals
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \draw[very thick,->]
+            (0,0) -- (5,0) node[below] {$v_r$};
+        \draw[very thick,->]
+            (0,0) -- (0,3.5) node[left] {$p_r$};
+        \begin{luacode}
+            t = 0.86
+
+            function p(v, k, p0)
+                return k * (8 * t / (3 * v - 1) - 3 / (v * v)) - p0
+            end
+
+            vlmin = 0.5
+            vlmax = minimize(p, {vlmin, 1}, 1, 0)
+
+            vgmax = 5.0
+            vgmin = minimize(p, {1, vgmax}, -1, 0)
+
+            function g(v)
+                return 
+                    4 * t * (1 / (3 * v - 1) - math.log(3 * v - 1)) / 9
+                    - 1 / v
+            end
+
+            function dg(p0)
+                local vl = solve(p, {vlmin, vlmax}, 1, p0)
+                local vg = solve(p, {vgmin, vgmax}, 1, p0)
+                return g(vg) - g(vl)
+            end
+
+            p0 = solve(dg, {0.13, 0.63})
+            vl = solve(p, {vlmin, vlmax}, 1, p0)
+            vg = solve(p, {vgmin, vgmax}, 1, p0)
+            vm = solve(p, {vlmax, vgmin}, 1, p0)
+
+            tex.print(
+                "\\draw (0.1,", 3 * p0, ") -- (-0.1,", 3 * p0, ")",
+                "node[left] {$p^{(0)}$};"
+            )
+            tex.print(
+                "\\draw (", vl, ",0.1) -- (", vl, ",-0.1)",
+                "node[below] {$v^{(i)}$};"
+            )
+            tex.print(
+                "\\draw (", vg, ",0.1) -- (", vg, ",-0.1)",
+                "node[below] {$v^{(f)}$};"
+            )
+
+            tex.print(
+                "\\draw[very thick,dashed,samples=10,fill=lightgray]",
+                "plot[domain=", vl, ":", vm, "]",
+                "(\\x,{3*(8*", t, "/(3*\\x-1)-3/(\\x*\\x))});"
+            )
+
+            tex.print(
+                "\\draw[very thick,dashed,samples=10,fill=gray]",
+                "plot[domain=", vm, ":", vg, "]",
+                "(\\x,{3*(8*", t, "/(3*\\x-1)-3/(\\x*\\x))});"
+            )
+
+            tex.print(
+                "\\draw[ultra thick,samples=10]",
+                "plot[domain=", solve(p, {0.4, 1}, 1, 3.2 / 3), ":", vl, "]",
+                "(\\x,{3*(8*", t, "/(3*\\x-1)-3/(\\x*\\x))})",
+                "-- plot[domain=", vg, ":4.5]",
+                "(\\x,{3*(8*", t, "/(3*\\x-1)-3/(\\x*\\x))});"
+            )
+        \end{luacode}
+    \end{tikzpicture}
+\end{figure}
+\noindent que corresponde à igualdade das áreas sombreadas no gráfico. Vemos que
+a transição se dá à pressão $p=p^{(0)}p_c$ entre uma fase densa incompressível 
+de volume $Nv_l=Nv^{(i)}v_c$ até uma fase rarefeita compressível de volume $Nv_g
+=Nv^{(f)}v_c$. Devido à expansão na transição, vemos a partir da conservação de
+energia que o sistema precisa absorver calor $Q=NL>0$. A instabilidade no gas de
+van der Waals nos proporciona algumas das propriedades mais importantes da
+transição de estado físico de líquidos para gases. O valor de $L$ pode ser
+extraido da linha de coexistência utilizando a equação de Clausius-Clapeyron
+para transições de primeira ordem em fluidos
+
+$$\left(\frac{dp}{dT}\right)_\text{coex}=\frac{L}{T(v_g-v_l)}.$$
+
+Como tanto o volume quanto a entropia são diferentes nos lados da fronteira,
+sendo primeiras derivadas da energia livre, essa transição é dita de primeira
+ordem. Próximo ao ponto crítico, a linha de coexistência é
+$$p_r-1=4(T_r-1),$$
+com
+$$v^{(i)}=1-2\sqrt{1-T_r},\quad v^{(f)}=1+2\sqrt{1-T_r},$$
+e portanto o calor latente é
+$$L=16p_cv_c\sqrt{1-T/T_c}.$$
+
 \subsection{Problemas}
 
 \begin{enumerate}
     \item
-        Com um filamento elástico foram realizados experimentos e mostrou-se que
-        seu comprimento livre $L$ e constante elástica $k$ em torno da
-        temperatura $T_0$ são dados por
-        $$L=L_0(1+\alpha(T-T_0)),\quad k=k_0(1+\beta(T-T_0)).$$
-        Além disso, mediu-se que a capacidade térmica do elástico a comprimento
-        constante $C_X$ é independente de sua temperatura.
+        Com um filamento elástico foram realizados experimentos e mediu-se que,
+        para certo intervalo de temperatura $T$, a tração $f$ depende do
+        comprimento $X$ como
+        $$f=aX-bT+cTX.$$
+        onde $a,b$ e $c$ foram medidas experimentalmente. Além disso,
+        determinou-se que a capacidade térmica do elástico a comprimento
+        constante é proporcional à temperatura $C_X=A(X)T.$
         \begin{enumerate}
             \item
-                Mostre que a capacidade térmica a comprimento constante é também
-                independente do comprimento $X$ do elástico
+                Calcule a variação de entropia por comprimento à temperatura
+                constante $\pd{S}{X}{T}$ em termos de $a,b,c$.
+                \answer{$\pd{S}{X}{T}=b-cX$}
             \item
-                Sendo $S_0$ a entropia do filamento no seu comprimento livre a
-                temperatura $T_0$, dê a expressão para entropia do elástico como
-                em termos de $X$ e $T$ e da capacidade térmica $C_X$.
-                \answer{}
+                Mostre que $A$ na verdade é independente de $X$.
             \item
-                Encontre a capacidade térmica a tração constante $C_f$ do
-                elástico
-                \answer{}
+                Dê uma espressão para a entropia $S(T,X)$ do filamento como
+                função da temperatura e do comprimento, dado que $S(0,0)=S_0$,
+                em termos de $a,b,c$ e $A$.
+                \answer{$S=S_0+AT+bX-\frac{1}{2}cX^2$}
+            \item 
+                Calcule a capacidade térmica à tração constante $C_f$ em termos
+                de $a,b,c$ e $A$.
+                \answer{$C_f=AT+\frac{aX}{a+cT}$}
         \end{enumerate}
+    \item
+        Mostre que estabilidade garante que as seguintes grandezas são positivas
+        para um fluido simples
+        \begin{enumerate}
+            \item $C_V=T\pd{S}{T}{V}$
+            \item $C_p=T\pd{S}{T}{p}$
+            \item $\kappa_S=-\frac{1}{V}\pd{V}{p}{S}$
+            \item $\kappa_T=-\frac{1}{V}\pd{V}{p}{T}$
+        \end{enumerate}
+    \item
+        Mostre que o gás ideal é estável.
+    \item
+        Uma certa quantidade de água é refrigerada de $25\,\mathrm{^\circ C}$
+        até $0\,\mathrm{^\circ C}$ e congelada. Neste processo todo o calor
+        do refrigerador utilizado é depositado em uma mesma quantidade de água
+        na máxima eficiência teórica. Essa segunda vai de $25\,\mathrm{^\circ C}
+        $ até $100\,\mathrm{^\circ C}$ e uma fração é vaporizada. Dado que para
+        a água $L_f=80\,\mathrm{cal/g}$ e $L_v=540\,\mathrm{cal/g}$, encontre a
+        fração de água que foi vaporizada.
+        \answer{
+            $\eta=\frac{T_b}{L_v}\left(c_w\log\frac{T_0^2}{T_bT_f}+
+            \frac{L_f}{T_f}\right)=14\%$
+        }
+    \item
+        Supondo que o calor latente de vaporização da água é aproximadamente
+        independente da temperatura $L=2300\,\mathrm{kJ/kg}$, e desprezando o
+        volume da água líquida, encontre a temperatura de ebulição da água no
+        topo do monte Everest, onde a pressão atmosférica é $\eta=33\%$ do que é
+        no nível do mar.
+        \answer{$\theta=70\,\mathrm{^\circ C}$}
+    \item
+        (200 PPP) Um bloco de gelo de $0{,}6\,\mathrm{kg}$ a $-10\,\mathrm{^
+        \circ C}$ é colocado no interior de um recipiente evacuado fechado de
+        $1\,\mathrm{m^3}$ que está à mesma temperatura. Aquecemos então o
+        recipiente até $100\,\mathrm{^\circ C}$. Desprezando a capacidade
+        térmica do recipiente, encontre o calor fornecido ao mesmo. É dado que
+        $c_i=0{,}5\,\mathrm{cal/g\,^\circ C}$.
+        \answer{
+            $Q=m(c_i(T_f-T_0)+L_f+c_w(T_b-\theta_f)+L_v- \frac{RT_b}{\mu})=
+            4100\,\mathrm{kcal}$
+        }
+    \item 
+        (200 MPPP) Ar é uma mistura de oxigênio e nitrogênio. O ponto de
+        ebulição do nitrogênio à pressão atmosférica é $77{,}4\,\mathrm K$. 
+        Quando o ar é comprimido isotermicamente a $77{,}4\,\mathrm K$ até 
+        $112\%$ da pressão atmosférica, observamos o princípio da liquefação do
+        oxigênio. Sabendo que o ar é aproximadamente $20\%$ oxigênio, encontre a
+        proporção de oxigênio numa mistura que, quando comprimida a 
+        $77{,}4\,\mathrm K$, observamos a liquefação de ambos os gases ao mesmo
+        tempo.
+        \answer{$x'=\frac{1}{1+\frac{1}{\eta x}}=18\%$}
+
+    \item
+        Uma quantidade $N$ de quartzo líquido, se resfriado vagarosamente,
+        cristaliza a uma temperatura $T_0$ liberando calor latente $NL$. Se
+        resfriarmos rapidamente, o líquido sofre superresfriamento e torna-se
+        vidro, sem liberar calor.
+        \begin{enumerate}
+            \item
+                Nas duas fases podemos considerar o quartzo incompressível, sem
+                apresentar qualquer forma de trabalho. Escreva o potencial
+                químico $\mu$ em termos da energia interna $U$, entropia $S$,
+                temperatura $T$ e quantidade $N$.
+                \answer{$\mu=\frac{U-TS}{N}$}
+            \item 
+                A capacidade térmica da fase cristalina é $C_X=\alpha NT^3$,
+                enquanto a da fase vitrificada é $C_G=\beta NT$. Supondo que a
+                entropia das duas fases é a mesma à $T=0$, escolhida como nula,
+                calcule a entropia das duas fases como função da temperatura.
+                \answer{$S_X=\frac{1}{3}\alpha NT^3,S_G=\beta NT$}
+            \item
+                Faça o mesmo para a energia interna, supondo que é a mesma para
+                ambas as fases em $T=0$ e escolhida como nula.
+                \answer{$U_X=\frac{1}{4}\alpha NT^4,U_G=\frac{1}{2}\beta NT^2$}
+            \item
+                Encontre $T_0$.
+                \answer{$T_0=\sqrt\frac{6\beta}{\alpha}$}
+            \item
+                Encontre $L$.
+                \answer{$L=-\frac{6\beta^2}{\alpha}$}
+            \item
+                O resultado anterior pode estar correto? Se não, qual suposição
+                feita no problema é mais provavelmente problemática?
+                \answer{o calor latente obtido é negativo. não podemos supor que
+                a entropia das duas fases é a mesma em $T=0$}
+        \end{enumerate}
+    \item
+        (200 MPPP) Encontre o calor liberado por unidade de massa no
+        congelamento de água superresfriada à temperatura $T_0=-10\,\mathrm
+        {^\circ C}$.
+        \answer{$L=T_0\left(\frac{L_f}{T_f}-(c_w-c_i)\log\frac{T_f}{T_0}\right)
+        =70\,\mathrm{cal/g}$}
 \end{enumerate}

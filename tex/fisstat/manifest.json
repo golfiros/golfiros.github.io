@@ -6,6 +6,7 @@
     "section03.tex",
     "section04.tex",
     "appendix02.tex",
-    "appendix01.tex"
+    "appendix01.tex",
+    "funcs.lua"
   ]
 }
