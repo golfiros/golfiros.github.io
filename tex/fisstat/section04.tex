@@ -108,9 +108,12 @@ Lembrando da expressão da primeira lei para processos contínuos, podemos tamb�
 escrever uma relação entre os diferenciais das variáveis de estado que precisa
 ser satisfeita para todo processo possível em qualquer estado de equilíbrio
 estável:
-$$dTdS+dy_1dX_1+\cdots+dy_ndX_n\geq0,$$
+$$dy_1dX_1+\cdots+dy_ndX_n\geq0,$$
 onde a igualdade segue da relação de Gibbs-Duhem em uma transformação de escala
-dada por $(dS,dX)\sim(S,X)$.
+dada por $dX\sim X$. Essa condição de estabilidade local pode ser satisfeita até
+por estados que violam a estabilidade global, levando à \textit{metaestabilidade
+} de alguns estados, que são resistentes a pequenas flutuações mas que estão
+sujeitos a nucleação para choques suficientemente grandes.
 
 Para outros potenciais termodinâmicos, novamente nos interessamos apenas na
 variação das variáveis extensivas que sobraram, e é fácil de ver que a
@@ -166,23 +169,48 @@ variável $x$.
                     "(", x0, ",0) -- (", x0,",", -f(x0, 0), ")", 
                     "-- (", x1, ",", -f(x1, 0), ") -- (", x1, ",0);"
                 )
+
+                function g(x) 
+                    t = math.pi * (x - 2.5) / (5.5 - 2.5)
+                    return -1.2 / x^2 - math.cos(2 * t) / (5.5 - 2.5)^2
+                end
+
+                y0 = solve(g, {2.5, 4.0})
+                y1 = solve(g, {4.0, 5.5})
+
+                tex.print(
+                    "\\draw[ultra thick,samples=10]",
+                    "plot[domain=1:2.5]",
+                    "(\\x,{1.2*ln(\\x)})",
+                    "plot[domain=2.5:", y0, "]",
+                    "(\\x,{1.2*ln(\\x)",
+                    "-0.5*pow(sin((\\x-2.5)*180/(5.5-2.5)),2)});"
+                )
+                tex.print(
+                    "\\draw[ultra thick,dashed,domain=", 
+                    y0, ":", y1, ",samples=10]",
+                    "plot (\\x,{1.2*ln(\\x)",
+                    "-0.5*pow(sin((\\x-2.5)*180/(5.5-2.5)),2)});"
+                )
+                tex.print(
+                    "\\draw[ultra thick,samples=10]",
+                    "plot[domain=", y1, ":5.5]",
+                    "(\\x,{1.2*ln(\\x)",
+                    "-0.5*pow(sin((\\x-2.5)*180/(5.5-2.5)),2)})",
+                    "plot[domain=5.5:7,samples=5]",
+                    "(\\x,{1.2*ln(\\x)});"
+                )
             \end{luacode}
-        \draw[ultra thick]
-            plot[domain=1:2.5,samples=10]
-                (\x,{1.2*ln(\x)})
-            plot[domain=2.5:5.5,samples=20]
-                (\x,{1.2*ln(\x)-0.5*pow(sin((\x-2.5)*180/(5.5-2.5)),2)})
-            plot[domain=5.5:7,samples=5]
-                (\x,{1.2*ln(\x)});
     \end{tikzpicture}
 \end{figure}
-Qualquer estado preparado com $x$ na região instável gera uma coexistência de
-fases na sua fronteira, e como a construção vem de retas tangentes vemos que
-todas as fases da matéria que coexistem devem compartilhar o valor de todos os
-coeficientes de trabalho - estão em equilíbrio termodinâmico umas com as outras.
-Assim, quando analisamos transições de fase é natural utilizar um potencial
-termodinâmico que deixa esses coeficientes intensivos em primeiro plano. 
-Escrevendo a Primeira Lei como
+A região metaestável foi diferenciada da totalmente instável pela linha
+pontilhada. Qualquer estado preparado com $x$ na região instável gera uma
+coexistência de fases na sua fronteira, e como a construção vem de retas
+tangentes vemos que todas as fases da matéria que coexistem devem compartilhar o
+valor de todos os coeficientes de trabalho - estão em equilíbrio termodinâmico
+umas com as outras. Assim, quando analisamos transições de fase é natural
+utilizar um potencial termodinâmico que deixa esses coeficientes intensivos em
+primeiro plano. Escrevendo a Primeira Lei como
 $$dU=y_1dX_1+\cdots y_ndX_n+\mu dN,$$
 olhamos para o potencial $V=U-y_1X_1-\cdots y_nX_n$, genericamente chamado de
 energia livre, que por extensividade é simplesmente dado por
